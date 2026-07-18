@@ -8,9 +8,11 @@ import {
   notFoundHandler,
 } from "../src/middleware/errorHandler.js";
 import { initSocket } from "./socket/index.js";
-
+import cookieParser from "cookie-parser";
 const app = express();
 const PORT = process.env.PORT || 5050;
+
+app.use(cookieParser());
 
 app.use(
   cors({

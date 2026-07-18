@@ -26,7 +26,7 @@ export function initSocket(httpServer: any) {
   });
   io.use((socket, next) => {
     try {
-      const token = socket.handshake.auth?.token;
+      const token = socket.handshake.headers.cookie;
       if (!token) return next(new Error("Authentication required"));
       const decoded = verifyToken(token);
       socket.data.user = {

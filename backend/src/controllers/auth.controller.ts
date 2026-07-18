@@ -48,7 +48,15 @@ export async function register(req: Request, res: Response) {
       email: user.email,
       name: user.name,
     });
-    res.status(201).json({ user: publicUser(user), token });
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000,
+      path: "/",
+    });
+    res.status(201).json({ user: publicUser(user) });
   } catch (error) {
     console.error(error);
     res
@@ -79,7 +87,14 @@ export async function login(req: Request, res: Response) {
       email: user.email,
       name: user.name,
     });
-    return res.json({ user: publicUser(user), token });
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 15 * 60 * 1000,
+      path: "/",
+    });
+    return res.json({ user: publicUser(user) });
   } catch (error) {
     console.error(error);
     res
@@ -88,6 +103,18 @@ export async function login(req: Request, res: Response) {
   }
 }
 
+export async function logout(req: Request, res: Response) {
+  try {
+    res.clearCookie("access_token");
+
+    return res.status(200);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Erorr on Auth Controller: [Logout Function]" });
+  }
+}
 export async function me(req: Request, res: Response) {
   try {
     const userId = req.user!.id;

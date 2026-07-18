@@ -1,5 +1,4 @@
 import { io, Socket } from "socket.io-client";
-import { getToken } from "./api";
 
 const SOCKET_URL =
   process.env.NODE_ENV === "development"
@@ -14,7 +13,7 @@ export function getSocket(): Socket {
   if (!socket) {
     socket = io(SOCKET_URL, {
       autoConnect: false,
-      auth: { token: getToken() },
+      withCredentials: true,
       transports: ["websocket"],
     });
   }
@@ -22,7 +21,6 @@ export function getSocket(): Socket {
 }
 export function connectSocket(): Socket {
   const s = getSocket();
-  s.auth = { token: getToken() };
   if (!s.connected) s.connect();
   return s;
 }

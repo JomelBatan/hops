@@ -1,11 +1,5 @@
 "use client";
-import {
-  authApi,
-  clearToken,
-  getToken,
-  setToken,
-  useApiClient,
-} from "@/libs/api";
+import { authApi, useApiClient } from "@/libs/api";
 import { connectSocket, disconnectSocket } from "@/libs/socket";
 import { AuthPayload, User } from "@/types";
 import {
@@ -39,10 +33,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function getUser() {
       setLoading(true);
       try {
-        const token = getToken();
-        if (!token) {
-          return;
-        }
         const res = await authApi.me(api);
         if (!res.data) return;
 
@@ -52,7 +42,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       } catch (error) {
         console.log(error);
-        clearToken();
       } finally {
         setLoading(false);
       }
@@ -60,8 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     getUser();
   }, [api]);
 
-  function handleAuth(user: User, token: string) {
-    setToken(token);
+  function handleAuth(user: User) {
     setUser(user);
     connectSocket();
     return user;
@@ -73,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await authApi.login(api, { email, password });
       console.log("After LogIN", res);
       if (!res.data) return;
-      handleAuth(res.data.user, res.data.token);
+      handleAuth(res.data.user);
 
       return user;
     } catch (error: unknown) {
@@ -91,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       const res = await authApi.register(api, { email, password });
       if (!res.data) return;
-      handleAuth(res.data.user, res.data.token);
+      handleAuth(res.data.user);
 
       return user;
     } catch (error: unknown) {
@@ -105,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
   function logout() {
-    clearToken();
+    //call logout here
     disconnectSocket();
     setUser(null);
   }

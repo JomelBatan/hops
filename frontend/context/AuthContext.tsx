@@ -57,9 +57,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function login({ email, password }: AuthPayload) {
     try {
       setLoading(true);
-      console.log("hit");
+
       const res = await authApi.login(api, { email, password });
-      console.log("After LogIN", res);
+
       if (!res.data) return;
       handleAuth(res.data.user);
 
@@ -92,10 +92,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   }
-  function logout() {
-    //call logout here
-    disconnectSocket();
-    setUser(null);
+  async function logout() {
+    try {
+      setLoading(true);
+
+      const res = await authApi.logout(api);
+
+      if (!res.data) return;
+      disconnectSocket();
+      setUser(null);
+
+      return;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <AuthContext.Provider value={{ user, loading, login, register, logout }}>

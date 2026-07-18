@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-midnight-blue: #293681;
+  --color-blue: #4274d9;
+  --color-light-blue: #95ccdd;
+  --color-mint-blue: #d0e7e6;
+  --color-brownish: #ffbe91;
+  --color-cream: #ffddb0;
+  --color-ink: #050811;
+  --color-light-whitesh: #fffce1;
+  --color-pastel-blue: #cfebff;
+  --color-primary: #5b5fef;
+  --color-line: #e9e8f3;
+  --color-muted: #5d5d6e;
+  --color-surface: #ffffff;
+  --color-faint: #9a9aae;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  /* refined, slightly violet-tinted layered shadows */
+
+  --shadow-card: 0 2px 6px rgba(91, 95, 239, 0.05);
+
+  --shadow-soft: 0 12px 30px rgba(91, 95, 239, 0.08);
+
+  --shadow-lift: 0 24px 60px rgba(91, 95, 239, 0.12);
+
+  --shadow-brand: 0 18px 48px rgba(91, 95, 239, 0.22);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* IE and older Edge */
+html {
+  -ms-overflow-style: none;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.navbar-scrolled {
+  @apply px-3 pt-3 sm:px-4 border-none;
+}
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d3d2e4;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #bfbdd6;
+  background-clip: padding-box;
+}
+/* ----------------------------------------------------------------------------
+   Components
+---------------------------------------------------------------------------- */
+@layer components {
+  .glass {
+    background: color-mix(in oklab, #fff 72%, transparent);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* shared field styles — radius is applied per-field in the component
+     (pills for single-line, rounded-2xl for textareas) */
+  .input-base {
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    padding: 0.6rem 1rem;
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    outline: none;
+    transition:
+      border-color 0.18s var(--ease-spring),
+      box-shadow 0.18s var(--ease-spring);
+  }
+  .input-base::placeholder {
+    color: var(--color-faint);
+  }
+  .input-base:focus {
+    border-color: color-mix(in oklab, var(--color-brand-500) 55%, transparent);
+    box-shadow: 0 0 0 4px rgba(47, 63, 129, 0.16);
+  }
+
+  .focus-ring:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-bg),
+      0 0 0 4px var(--color-brand-500);
+  }
+
+  /* the brand gradient, reusable — deep forest → fresh green */
+  .brand-gradient {
+    background-image: linear-gradient(
+      140deg,
+      #4274d9 0%,
+      #4274d9 52%,
+      #95ccdd 100%
+    );
+  }
+}
+
+@layer utilities {
+  .animate-in {
+    animation: fade-in 0.24s var(--ease-spring) both;
+  }
+  /* slowly pan the brand gradient so the hero panel feels alive */
+  .animate-gradient-pan {
+    background-size: 220% 220%;
+    animation: gradient-pan 14s ease-in-out infinite;
+  }
+  /* self-drawing line animation for outline (lucide) icons — loops forever.
+     used on the TOP layer; a static base icon sits underneath. */
+  .icon-draw :is(path, line, polyline, polygon, circle, rect, ellipse) {
+    stroke: var(--trace-stroke, currentColor);
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+  }
+  .icon-draw.is-drawing
+    :is(path, line, polyline, polygon, circle, rect, ellipse) {
+    animation: icon-draw 3s ease-in-out infinite;
+    animation-delay: var(--draw-delay, 0s);
+  }
+  /* never leave an icon stuck hidden when motion is reduced */
+  @media (prefers-reduced-motion: reduce) {
+    .icon-draw :is(path, line, polyline, polygon, circle, rect, ellipse) {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+  }
+  [data-reduce-motion="true"]
+    .icon-draw
+    :is(path, line, polyline, polygon, circle, rect, ellipse) {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* tabular numbers — every metric & count uses this so digits don't jitter */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    color: black;
+  }
+  /* diagonal hatch — used for "empty / no data" chart bars */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-ink) 8%, transparent) 0 1.5px,
+      transparent 1.5px 7px
+    );
+  }
+  .text-gradient {
+    background-image: linear-gradient(135deg, #4274d9 0%, #95ccdd 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* drifting pan for the hero brand gradient */
+@keyframes gradient-pan {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* stroke draw-on for outline icons — draw in, hold, then erase out */
+@keyframes icon-draw {
+  0% {
+    stroke-dashoffset: 120;
+  }
+  40% {
+    stroke-dashoffset: 0;
+  }
+  60% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -120;
+  }
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface-2);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.75),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}

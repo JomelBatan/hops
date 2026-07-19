@@ -12,14 +12,14 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   className?: string;
-  id: string;
+  id?: string;
 }
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
-  error: string;
-  className: string;
-  id: string;
-  row: number;
+  error?: string;
+  className?: string;
+  id?: string;
+  row?: number;
 }
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
@@ -72,11 +72,9 @@ export const Textarea = ({
     <textarea
       id={id}
       rows={rows}
-      className={cn(
-        "input-base resize-none rounded-2xl",
-        error && "border-priority-urgent!",
-        className,
-      )}
+      className={` "input-base resize-none rounded-2xl
+      ${error && "border-priority-urgent!"}
+      ${className}`}
       {...props}
     />
     {error && <p className="text-xs text-priority-urgent">{error}</p>}

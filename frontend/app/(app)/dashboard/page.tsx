@@ -79,7 +79,7 @@ export default function DashboardPage() {
     [boards],
   );
   return (
-    <div className="min-h-screen hoverflow-x-clip bg-white">
+    <>
       <Topbar
         title="Dashboard"
         subtitle="Your boards and shared projects"
@@ -90,10 +90,10 @@ export default function DashboardPage() {
         <div className="mx-auto max-w-[1600px] px-6 py-8 md:px-8">
           {/* Greeting */}
           <div className="mb-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-500">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
               Workspace Overview
             </p>
-            <h2 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-semibold leading-tight tracking-tight">
+            <h2 className="text-black mt-2 font-display text-[clamp(26px,3vw,34px)] font-semibold leading-tight tracking-tight">
               Welcome back, {user?.name?.split(" ")[0]} 👋
             </h2>
           </div>
@@ -209,18 +209,18 @@ export default function DashboardPage() {
                         <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                       </span>
                     </div>
-                    <h4 className="font-display text-base font-semibold tracking-tight transition-colors group-hover:text-brand-600">
+                    <h4 className="font-display text-black text-base font-semibold tracking-tight transition-colors group-hover:text-brand-600">
                       {b.title}
                     </h4>
                     <p className="mt-1.5 line-clamp-2 min-h-10 text-sm leading-relaxed text-muted">
                       {b.description || "No description"}
                     </p>
-                    <div className="mt-4 flex items-center gap-4 border-t pt-3.5 text-xs text-faint">
-                      <span className="flex items-center gap-1.5 tabular">
+                    <div className="mt-4 flex items-center gap-4 border-t border-faint pt-3.5 text-xs text-faint">
+                      <span className="flex items-center gap-1.5">
                         <CheckSquare className="h-3.5 w-3.5" /> {b.task_count}{" "}
                         tasks
                       </span>
-                      <span className="flex items-center gap-1.5 tabular">
+                      <span className="flex items-center gap-1.5">
                         <Users className="h-3.5 w-3.5" /> {b.member_count}
                       </span>
                       <span className="ml-auto">
@@ -234,6 +234,6 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 }

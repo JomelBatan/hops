@@ -27,7 +27,7 @@ export default function AIPromo({ onCreate, className = "" }: AIPromoProps) {
       </div>
       <button
         onClick={onCreate}
-        className="relative mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-brand-700 shadow-(--shadow-card) transition-transform duration-200 active:scale-[0.97]"
+        className="relative mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-primary shadow-(--shadow-card) transition-transform duration-200 active:scale-[0.97]"
       >
         <Plus className="h-4 w-4" /> New board
       </button>

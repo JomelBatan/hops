@@ -60,8 +60,8 @@ function NavItem({ to, icon: Icon, label, collapsed, badge }: NavItemProps) {
         collapsed ? "mx-auto w-11 justify-center" : "gap-3 px-3"
       } ${
         isActive
-          ? "bg-brand-50 font-semibold text-brand-700"
-          : "text-muted hover:bg-surface-2 hover:text-ink"
+          ? "bg-primary/20 text-primary/90  font-semibold"
+          : "text-muted hover:bg-gray-200/60 hover:text-ink"
       }`}
     >
       {isActive && !collapsed && (
@@ -70,7 +70,7 @@ function NavItem({ to, icon: Icon, label, collapsed, badge }: NavItemProps) {
       <Icon className="h-5 w-5 shrink-0" />
       {!collapsed && <span className="flex-1 truncate">{label}</span>}
       {!collapsed && badge != null && (
-        <span className="rounded-full bg-ink px-1.5 py-0.5 text-[10px] font-bold tabular text-bg">
+        <span className="rounded-full bg-ink px-1.5 py-0.5 text-[10px] font-bold  text-bg">
           {badge}
         </span>
       )}
@@ -217,8 +217,8 @@ export default function SideBar({
                       <span className="flex-1 truncate">{b.title}</span>
                     )}
                     {!collapsed && (
-                      <span className="shrink-0 pr-1 text-[10px] font-medium tabular text-faint">
-                        {/*b.task_count*/}
+                      <span className="shrink-0 pr-1 text-[10px] font-medium  text-faint">
+                        {b.task_count}
                       </span>
                     )}
                   </Link>
@@ -253,7 +253,7 @@ export default function SideBar({
             router.replace("/login");
           }}
           title={collapsed ? "Log out" : undefined}
-          className={`group flex h-11 w-full items-center rounded-2xl text-sm font-medium text-muted transition-colors duration-200 hover:bg-priority-urgent/10 hover:text-priority-urgent
+          className={`group cursor-pointer flex h-11 w-full items-center rounded-2xl text-sm font-medium text-muted transition-colors duration-200 hover:bg-priority-urgent/10 hover:text-priority-urgent
             ${collapsed ? "mx-auto w-11 justify-center" : "gap-3 px-3"}`}
         >
           <LogOut className="h-5 w-5 shrink-0" />

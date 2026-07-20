@@ -43,14 +43,14 @@ export default function RecentBoards({
                   Updated {relativeTime(b.updated_at)}
                 </p>
               </div>
-              <span className="hidden items-center gap-1.5 text-[11px] font-medium tabular text-faint sm:flex">
+              <span className="hidden items-center gap-1.5 text-[11px] font-medium text-faint sm:flex">
                 <Users className="h-3.5 w-3.5" /> {b.member_count}
               </span>
 
-              <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-medium tabular text-muted">
+              <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-medium text-muted">
                 {b.task_count} tasks
               </span>
-              <ArrowUpRight className="h-4 w-4 shrink-0 text-faint opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-brand-500 group-hover:opacity-100" />
+              <ArrowUpRight className="h-4 w-4 shrink-0 text-faint opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary/80 group-hover:opacity-100" />
             </Link>
           );
         })}

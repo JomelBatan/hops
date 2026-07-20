@@ -90,7 +90,7 @@ export default function CreateBoardModal({
                 key={c}
                 type="button"
                 onClick={() => setForm({ ...form, color: c })}
-                className={`"h-7 w-7 rounded-full transition-transform
+                className={`h-7 w-7 rounded-full transition-transform
                   ${
                     form.color === c
                       ? "ring-2 ring-ink/70 ring-offset-2 ring-offset-surface"

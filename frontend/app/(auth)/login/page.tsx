@@ -30,7 +30,7 @@ export default function Login() {
     try {
       await login(form);
       toast.success("Welcome back!");
-      //router.replace("/dashboard");
+      router.replace("/dashboard");
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err.message);

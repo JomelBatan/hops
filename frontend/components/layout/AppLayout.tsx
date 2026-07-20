@@ -22,12 +22,10 @@ const LayoutContext = createContext<LayoutContextType | null>(null);
 export function LayoutInner({ children }: { children: ReactNode }) {
   const [createOpen, setCreateOpen] = useState<boolean>(false);
   const [commandOpen, setCommandOpen] = useState<boolean>(false);
-  const [collapsed, setCollapsed] = useState(
-    () => localStorage.getItem("sidebar-collapsed") === "true",
-  );
-
-  const openCreateBoard = useCallback(() => setCreateOpen(true), []);
-  const openCommand = useCallback(() => setCommandOpen(true), []);
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("sidebar-collapsed") === "true";
+  });
   const toggleSideBar = useCallback(
     () =>
       setCollapsed((c) => {
@@ -37,6 +35,8 @@ export function LayoutInner({ children }: { children: ReactNode }) {
       }),
     [],
   );
+  const openCreateBoard = useCallback(() => setCreateOpen(true), []);
+  const openCommand = useCallback(() => setCommandOpen(true), []);
 
   // Global ⌘K / Ctrl+K
   useEffect(() => {

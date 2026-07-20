@@ -1,3 +1,4 @@
+"use client";
 import { LayoutInner } from "@/components/layout/AppLayout";
 import { BoardProvider } from "@/context/BoardContext";
 import React from "react";

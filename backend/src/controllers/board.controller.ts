@@ -2,29 +2,45 @@ import { query, withTransactions } from "../config/db.js";
 import { ApiError } from "../utils/ApiError.js";
 import { emitToBoard, logActivity } from "../realtime/index.js";
 import type { Request, Response } from "express";
+import { DatabaseError } from "pg";
 
 const DEFAULT_COLUMNS = ["Todo", "In Progress", "Review", "Done"];
 
 export async function listBoard(req: Request, res: Response) {
   try {
     const userId = req.user!.id;
-
     const { rows } = await query(
       `SELECT b.*,
             (b.owner_id = $1)       AS is_owner,
             (SELECT COUNT(*) FROM tasks t WHERE t.board_id = b.id) AS task_count,
-            (SELECT COUNT(*) FROM board_members m WHERE m.board_id = b.id) AS member_count,
+            (SELECT COUNT(*) FROM board_members m WHERE m.board_id = b.id) AS member_count
         FROM boards b
         LEFT JOIN board_members mm ON mm.board_id = b.id AND mm.user_id = $1
         WHERE b.owner_id = $1 OR mm.user_id = $1
         ORDER BY b.updated_at DESC`,
       [userId],
     );
+
     res.json({ boards: rows });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Erorr on Board Controller: [List Board Function]" });
+  } catch (err) {
+    const error = err as DatabaseError;
+
+    console.error({
+      message: error.message,
+      code: error.code,
+      detail: error.detail,
+      hint: error.hint,
+      position: error.position,
+      table: error.table,
+      column: error.column,
+      constraint: error.constraint,
+      schema: error.schema,
+      stack: error.stack,
+    });
+    res.status(500).json({
+      error: "Erorr on Board Controller: [List Board Function]",
+      actual: error,
+    });
   }
 }
 export async function createBoard(req: Request, res: Response) {

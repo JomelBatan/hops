@@ -9,7 +9,15 @@ interface TasksByBoardProps {
   boards: Board[];
   className?: string;
 }
-
+function barShade(pct: number): string {
+  return pct >= 0.8
+    ? "#4a4edf"
+    : pct >= 0.5
+      ? "#5b5fef"
+      : pct >= 0.25
+        ? "#878af4"
+        : "#c7c9fc";
+}
 export default function TasksByBoard({
   boards,
   className = "",
@@ -44,12 +52,15 @@ export default function TasksByBoard({
                   <div className="relative flex w-full max-w-11 flex-1 items-end justify-center">
                     {count > 0 ? (
                       <>
-                        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1 rounded-full bg-ink px-2 py-0.5 text-[10px] font-semibold tabular text-white opacity-0 shadow-(--shadow-soft) transition-opacity duration-200 group-hover:opacity-100">
+                        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1 rounded-full bg-ink px-2 py-0.5 text-[10px] font-semibold  text-white opacity-0 shadow-(--shadow-soft) transition-opacity duration-200 group-hover:opacity-100">
                           {count}
                         </span>
                         <div
                           className="w-full rounded-full"
-                          style={{ backgroundColor: barShade(pct) }}
+                          style={{
+                            backgroundColor: barShade(pct),
+                            height: `${Math.max(pct * 100, 8)}%`,
+                          }}
                         />
                       </>
                     ) : (
@@ -92,7 +103,7 @@ export default function TasksByBoard({
                     <span className="text-[13px] font-semibold tabular text-ink">
                       {count}
                     </span>
-                    <span className="w-9 text-right text-[11px] tabular text-faint">
+                    <span className="w-9 text-right text-[11px] text-faint">
                       {share}%
                     </span>
                   </Link>
@@ -108,13 +119,4 @@ export default function TasksByBoard({
       )}
     </div>
   );
-}
-function barShade(pct: number) {
-  return pct >= 0.8
-    ? "#1d5038"
-    : pct >= 0.5
-      ? "#2f8159"
-      : pct >= 0.25
-        ? "#57a47b"
-        : "#8bc4a4";
 }

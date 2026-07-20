@@ -57,7 +57,7 @@ export default function WorkspaceDonut({
                 cy="70"
                 r={R}
                 fill="none"
-                stroke="#2f8159"
+                stroke="#4a4edf"
                 strokeWidth={SW}
                 strokeDasharray={`${ownedLen} ${C}`}
               />
@@ -68,7 +68,7 @@ export default function WorkspaceDonut({
                 cy="70"
                 r={R}
                 fill="none"
-                stroke="#8bc4a4"
+                stroke="#c7c9fc"
                 strokeWidth={SW}
                 strokeDasharray={`${sharedLen} ${C}`}
                 strokeDashoffset={-ownedLen}
@@ -85,8 +85,8 @@ export default function WorkspaceDonut({
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-3">
-          <Legend color="#2f8159" label="Owned" value={owned} />
-          <Legend color="#8bc4a4" label="Shared" value={shared} />
+          <Legend color="#4a4edf" label="Owned" value={owned} />
+          <Legend color="#c7c9fc" label="Shared" value={shared} />
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export default function WorkspaceDonut({
               <span className="truncate text-sm font-semibold text-ink">
                 {busiest.title}
               </span>
-              <span className="shrink-0 rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-medium tabular text-muted">
+              <span className="shrink-0 rounded-full bg-gray-200 px-2 py-0.5 text-[11px] font-medium  text-muted">
                 {busiest.task_count}
               </span>
             </span>

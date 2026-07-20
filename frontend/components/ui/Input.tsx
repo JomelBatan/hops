@@ -72,7 +72,7 @@ export const Textarea = ({
     <textarea
       id={id}
       rows={rows}
-      className={` "input-base resize-none rounded-2xl
+      className={`input-base resize-none rounded-2xl
       ${error && "border-priority-urgent!"}
       ${className}`}
       {...props}

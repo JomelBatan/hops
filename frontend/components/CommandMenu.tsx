@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 interface CommandMenuProps {
   open: boolean;
@@ -117,15 +116,15 @@ export default function CommandMenu({
     }
   };
 
-  return createPortal(
+  return (
     <div>
       {open && (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center p-4 pt-[12vh]">
+        <div className="fixed inset-0 z-60 flex items-start justify-center p-4 pt-[12vh]">
           <div
             className="fixed inset-0 bg-ink/35 backdrop-blur-sm"
             onClick={onClose}
           />
-          <div className="card relative z-10 w-full max-w-xl overflow-hidden rounded-3xl shadow-[var(--shadow-lift)]">
+          <div className="card relative z-10 w-full max-w-xl overflow-hidden rounded-3xl shadow-(--shadow-lift)">
             <div className="flex items-center gap-3 border-b px-4">
               <Search className="h-4 w-4 text-faint" />
 
@@ -156,7 +155,7 @@ export default function CommandMenu({
                     className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors
                       ${
                         active === i
-                          ? "bg-brand-50 text-brand-700"
+                          ? "bg-primary/20 text-primary/90 "
                           : "text-muted"
                       }`}
                   >
@@ -174,7 +173,6 @@ export default function CommandMenu({
           </div>
         </div>
       )}
-    </div>,
-    document.body,
+    </div>
   );
 }

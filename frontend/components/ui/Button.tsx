@@ -56,7 +56,7 @@ export default function Button({
   return (
     <button
       className={`
-        "inline-flex select-none items-center justify-center whitespace-nowrap rounded-full font-semibold transition-all duration-200 ease-[var(--ease-spring)] focus-ring disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]",
+        flex flex-row select-none items-center justify-center whitespace-nowrap rounded-full font-semibold transition-all duration-200 ease-spring focus-ring disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]
         ${variants[variant]}
         ${sizes[size]}
         ${className}`}

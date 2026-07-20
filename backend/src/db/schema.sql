@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS columns (
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS task (
+CREATE TABLE IF NOT EXISTS tasks (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     board_id        UUID NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
     column_id       UUID NOT NULL REFERENCES columns(id) ON DELETE CASCADE,

@@ -1,8 +1,6 @@
 import { Sizes } from "@/types";
 import { X } from "lucide-react";
 import React, { ReactNode, useEffect } from "react";
-import { createPortal } from "react-dom";
-
 interface ModalProps {
   open: boolean;
   onClose: () => void;
@@ -36,10 +34,10 @@ export default function Modal({
     xl: "max-w-3xl",
   };
 
-  return createPortal(
+  return (
     <div>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:p-8">
+        <div className="fixed inset-0  z-50 flex items-start justify-center overflow-y-auto p-4 sm:p-8">
           <div
             className="fixed inset-0 bg-ink/35 backdrop-blur-sm"
             onClick={onClose}
@@ -52,7 +50,7 @@ export default function Modal({
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
                   {title && (
-                    <h2 className="font-display text-lg font-semibold tracking-tight">
+                    <h2 className="font-display text-black text-lg font-semibold tracking-tight">
                       {title}
                     </h2>
                   )}
@@ -75,7 +73,6 @@ export default function Modal({
           </div>
         </div>
       )}
-    </div>,
-    document.body,
+    </div>
   );
 }

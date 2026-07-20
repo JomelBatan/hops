@@ -64,6 +64,19 @@ const BOARDS = [
       "Pricing experiment plan",
       "Competitor analysis",
       "Leadership roadmap review",
+      "Measure campaign KPIs",
+      "Fix authentication bug",
+      "Complete notification service",
+      "Code review pending PRs",
+      "Refactor user module",
+      "Increase test coverage",
+      "Sprint retrospective",
+      "Finalize campaign slogan",
+      "Schedule social media posts",
+      "Prepare launch email",
+      "Design promotional banner",
+      "Coordinate influencers",
+      "Measure campaign KPIs",
     ],
   },
   {
@@ -77,9 +90,6 @@ const BOARDS = [
       "Create onboarding mockups",
       "Review navigation flow",
       "Update design system",
-      "Implement dark mode",
-      "Accessibility audit",
-      "Sprint demo preparation",
     ],
   },
   {
@@ -96,6 +106,9 @@ const BOARDS = [
       "Socket event improvements",
       "Write API documentation",
       "Performance testing",
+      "Implement dark mode",
+      "Accessibility audit",
+      "Sprint demo preparation",
     ],
   },
   {
@@ -106,6 +119,13 @@ const BOARDS = [
     member: ["emily", "ava", "mia", "harper"],
     updatedDaysAgo: 4,
     tasks: [
+      "Measure campaign KPIs",
+      "Fix authentication bug",
+      "Complete notification service",
+      "Code review pending PRs",
+      "Refactor user module",
+      "Increase test coverage",
+      "Sprint retrospective",
       "Finalize campaign slogan",
       "Schedule social media posts",
       "Prepare launch email",
@@ -128,6 +148,8 @@ const BOARDS = [
       "Plan customer webinar",
       "NPS survey analysis",
       "Monthly feedback report",
+      "Fix authentication bug",
+      "Complete notification service",
     ],
   },
   {
@@ -138,6 +160,9 @@ const BOARDS = [
     member: ["liam", "benjamin", "isabella", "lucas"],
     updatedDaysAgo: 0.1,
     tasks: [
+      "Design promotional banner",
+      "Coordinate influencers",
+      "Measure campaign KPIs",
       "Fix authentication bug",
       "Complete notification service",
       "Code review pending PRs",
@@ -249,7 +274,7 @@ async function run() {
 
         await c.query(
           `
-            INSERT INTO task
+            INSERT INTO tasks
                 (board_id, column_id, title, description, priority, due_date, assignee_id, position, created_by, created_at, updated_at)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, now() - interval '20 days', $10)`,
           [

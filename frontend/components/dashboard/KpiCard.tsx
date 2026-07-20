@@ -46,7 +46,7 @@ export default function KpiCard({
               ${
                 featured
                   ? "bg-white/20 text-white"
-                  : "bg-brand-50 text-brand-600 group-hover:bg-brand-100"
+                  : "bg-primary/20 text-primary/90 group-hover:bg-primary/40"
               }`}
           >
             {!!Icon ? (
@@ -58,7 +58,9 @@ export default function KpiCard({
         </div>
         <div className="flex items-end justify-between gap-3">
           <div className="min-w-0">
-            <p className="font-display text-[40px] font-semibold leading-none tracking-tight tabular">
+            <p
+              className={`font-display text-[40px] font-semibold leading-none tracking-tight ${featured ? "text-white" : "text-black"}`}
+            >
               {value}
             </p>
             {hint && (

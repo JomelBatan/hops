@@ -17,8 +17,8 @@ export default function Sparkbars({ data, featured }: SparkbarsProps) {
               featured
                 ? "bg-white/45"
                 : v === peak
-                  ? "bg-brand-500"
-                  : "bg-brand-300"
+                  ? "bg-primary/70"
+                  : "bg-primary/30"
             }`}
           style={{ height: `${Math.max((v / max) * 100, 14)}%` }}
         />

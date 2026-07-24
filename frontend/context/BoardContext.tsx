@@ -1,5 +1,5 @@
 "use client";
-import { boardApi, useApiClient } from "@/libs/api";
+import { boardApi } from "@/libs/api";
 import { Board, BoardPayload } from "@/types";
 import {
   createContext,
@@ -24,11 +24,10 @@ const BoardsContext = createContext<BoardContextType | null>(null);
 export function BoardProvider({ children }: { children: ReactNode }) {
   const [boards, setBoards] = useState<Board[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const api = useApiClient();
 
   const refresh = useCallback(async () => {
     try {
-      const res = await boardApi.list(api);
+      const res = await boardApi.list();
       if (!res.data) return;
       const boards = res.data.boards;
 
@@ -43,7 +42,7 @@ export function BoardProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, [api]);
+  }, []);
 
   useEffect(() => {
     function refresher() {
@@ -55,7 +54,7 @@ export function BoardProvider({ children }: { children: ReactNode }) {
 
   async function create(data: BoardPayload) {
     try {
-      const res = await boardApi.create(api, data);
+      const res = await boardApi.create(data);
       if (!res.data) return;
 
       const board = res.data.board;
@@ -72,7 +71,7 @@ export function BoardProvider({ children }: { children: ReactNode }) {
   }
   async function remove(id: string) {
     try {
-      const res = await boardApi.remove(api, id);
+      const res = await boardApi.remove(id);
       if (!res.data) return;
 
       setBoards((prev) => prev.filter((b) => b.id !== id));

@@ -89,10 +89,13 @@ export interface Task {
   column_id: string;
   title: string;
   description: string | null;
-  priority: PriorityValue | string;
+  priority: PriorityValue;
   due_date: Date | null;
   assignee_id: string | null;
   position: number;
+  board_title?: string;
+  board_color?: string;
+  status?: string;
   created_by: string | null;
   created_at: Date;
   updated_at: Date;

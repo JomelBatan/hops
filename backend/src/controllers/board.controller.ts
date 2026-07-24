@@ -92,14 +92,18 @@ export async function getBoard(req: Request, res: Response) {
         boardId,
       ]),
       query(
-        `SELECT t.*
-                a.name AS asignee_name, a.email AS asignee_email, a.avatar_url AS asignee_avatar
-        FROM task t
-        LEFT JOIN users a ON a.id = t.asignee_id
-        WHERE t.board_id = $1
-        ORDER BY t.position ASC`,
+        `SELECT
+      t.*,
+      a.name AS assignee_name,
+      a.email AS assignee_email,
+      a.avatar_url AS assignee_avatar
+   FROM tasks t
+   LEFT JOIN users a ON a.id = t.assignee_id
+   WHERE t.board_id = $1
+   ORDER BY t.position ASC`,
         [boardId],
       ),
+
       query(
         `SELECT u.id, u.name, u.email, u.avatar_url, m.role, m.joined_at
         FROM board_members m
@@ -118,9 +122,10 @@ export async function getBoard(req: Request, res: Response) {
       role: req.board?.role,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error on Board Controller: [Get Board Function]" });
+    res.status(500).json({
+      error: "Error on Board Controller: [Get Board Function]",
+      actual: error,
+    });
   }
 }
 export async function updateBoard(req: Request, res: Response) {

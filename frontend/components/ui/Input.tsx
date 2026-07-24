@@ -28,7 +28,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   id: string;
 }
 interface FilterSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  className: string;
+  className?: string;
 }
 export const Input = ({
   label,
@@ -110,7 +110,7 @@ export const Select = ({
 );
 
 export const FilterSelect = ({
-  className,
+  className = "",
   children,
   ...props
 }: FilterSelectProps) => (

@@ -1,5 +1,5 @@
 "use client";
-import { authApi, useApiClient } from "@/libs/api";
+import { authApi } from "@/libs/api";
 import { connectSocket, disconnectSocket } from "@/libs/socket";
 import { AuthPayload, User } from "@/types";
 import {
@@ -27,13 +27,13 @@ TODO:
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const api = useApiClient();
+
   //Restore session on first load if a token is present
   useEffect(() => {
     async function getUser() {
       setLoading(true);
       try {
-        const res = await authApi.me(api);
+        const res = await authApi.me();
         if (!res.data) return;
 
         setUser(res.data.user);
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
     getUser();
-  }, [api]);
+  }, []);
 
   function handleAuth(user: User) {
     setUser(user);
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setLoading(true);
 
-      const res = await authApi.login(api, { email, password });
+      const res = await authApi.login({ email, password });
 
       if (!res.data) return;
       handleAuth(res.data.user);
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function register({ email, password }: AuthPayload) {
     try {
       setLoading(true);
-      const res = await authApi.register(api, { email, password });
+      const res = await authApi.register({ email, password });
       if (!res.data) return;
       handleAuth(res.data.user);
 
@@ -96,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setLoading(true);
 
-      const res = await authApi.logout(api);
+      const res = await authApi.logout();
 
       if (!res.data) return;
       disconnectSocket();

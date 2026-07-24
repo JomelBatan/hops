@@ -62,6 +62,7 @@ export async function listTask(req: Request, res: Response) {
         `,
       params,
     );
+    console.log("Hit");
     res.json({ tasks: rows });
   } catch (error) {
     res

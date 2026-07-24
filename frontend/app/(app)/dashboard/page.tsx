@@ -1,6 +1,6 @@
 "use client";
 import AIPromo from "@/components/dashboard/AIPromo";
-import EmptyState from "@/components/dashboard/EmptyState";
+import { EmptyStateDashboard } from "@/components/ui/EmptyState";
 import KpiCard from "@/components/dashboard/KpiCard";
 import RecentBoards from "@/components/dashboard/RecentBoards";
 import TasksByBoard from "@/components/dashboard/TasksByBoard";
@@ -175,7 +175,7 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : boards.length === 0 ? (
-            <EmptyState onCreate={openCreateBoard} />
+            <EmptyStateDashboard onCreate={openCreateBoard} />
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {boards.map((b, i) => (

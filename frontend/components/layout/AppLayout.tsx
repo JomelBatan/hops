@@ -22,10 +22,21 @@ const LayoutContext = createContext<LayoutContextType | null>(null);
 export function LayoutInner({ children }: { children: ReactNode }) {
   const [createOpen, setCreateOpen] = useState<boolean>(false);
   const [commandOpen, setCommandOpen] = useState<boolean>(false);
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return localStorage.getItem("sidebar-collapsed") === "true";
-  });
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("sidebar-collapsed");
+    function init() {
+      if (stored !== null) {
+        setCollapsed(stored === "true");
+      }
+    }
+    init();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", String(collapsed));
+  }, [collapsed]);
   const toggleSideBar = useCallback(
     () =>
       setCollapsed((c) => {

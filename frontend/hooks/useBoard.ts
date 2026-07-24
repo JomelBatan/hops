@@ -1,4 +1,4 @@
-import { boardApi, columnApi, taskApi, useApiClient } from "@/libs/api";
+import { boardApi, columnApi, taskApi } from "@/libs/api";
 import { connectSocket } from "@/libs/socket";
 import {
   Board,
@@ -22,7 +22,6 @@ export function useBoard(boardId: string) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [presence, setPresence] = useState<User[]>([]);
-  const api = useApiClient();
 
   const upsertTask = useCallback((task: Task) => {
     setTasks((prev) => {
@@ -47,7 +46,7 @@ export function useBoard(boardId: string) {
         setLoading(true);
         setError(null);
 
-        const res = await boardApi.get(api, boardId);
+        const res = await boardApi.get(boardId);
 
         if (!alive || !res.data) return;
 
@@ -76,7 +75,7 @@ export function useBoard(boardId: string) {
     return () => {
       alive = false;
     };
-  }, [boardId, api]);
+  }, [boardId]);
 
   // Real-time sync
   useEffect(() => {
@@ -138,7 +137,7 @@ export function useBoard(boardId: string) {
   const createTask = useCallback(
     async (data: TaskPayload) => {
       try {
-        const res = await taskApi.create(api, boardId, data);
+        const res = await taskApi.create(boardId, data);
         const task = res.data.task;
         if (!task) return;
         upsertTask(task);
@@ -153,7 +152,7 @@ export function useBoard(boardId: string) {
         throw error;
       }
     },
-    [boardId, upsertTask, api],
+    [boardId, upsertTask],
   );
 
   const updateTask = useCallback(
@@ -166,7 +165,7 @@ export function useBoard(boardId: string) {
         });
       }
       try {
-        const res = await taskApi.update(api, boardId, taskId, data);
+        const res = await taskApi.update(boardId, taskId, data);
         const task = res.data.task;
         if (!task) return;
         upsertTask(task);
@@ -182,7 +181,7 @@ export function useBoard(boardId: string) {
         throw error;
       }
     },
-    [boardId, tasks, upsertTask, api],
+    [boardId, tasks, upsertTask],
   );
 
   const deleteTask = useCallback(
@@ -191,7 +190,7 @@ export function useBoard(boardId: string) {
       removeTaskLocal(taskId);
 
       try {
-        await taskApi.remove(api, boardId, taskId);
+        await taskApi.remove(boardId, taskId);
         toast.success("Task deleted");
       } catch (error) {
         if (error instanceof Error) {
@@ -204,7 +203,7 @@ export function useBoard(boardId: string) {
         throw error;
       }
     },
-    [boardId, tasks, removeTaskLocal, upsertTask, api],
+    [boardId, tasks, removeTaskLocal, upsertTask],
   );
 
   //Apply a local move immediately, then persist
@@ -214,7 +213,7 @@ export function useBoard(boardId: string) {
       if (!prev) return;
       upsertTask({ ...prev, column_id: columnId, position });
       try {
-        await taskApi.move(api, boardId, taskId, {
+        await taskApi.move(boardId, taskId, {
           column_id: columnId,
           position,
         });
@@ -227,13 +226,13 @@ export function useBoard(boardId: string) {
         }
       }
     },
-    [boardId, tasks, upsertTask, api],
+    [boardId, tasks, upsertTask],
   );
 
   const addColumn = useCallback(
     async (title: string) => {
       try {
-        const res = await columnApi.create(api, boardId, { title });
+        const res = await columnApi.create(boardId, { title });
         if (!res.data) return;
         const col = res.data.column;
         setColumns((p) => [...p, col].sort((a, b) => a.position - b.position));
@@ -245,7 +244,7 @@ export function useBoard(boardId: string) {
         }
       }
     },
-    [boardId, api],
+    [boardId],
   );
 
   const renameColumn = useCallback(
@@ -254,7 +253,7 @@ export function useBoard(boardId: string) {
         p.map((c) => (c.id === columnId ? { ...c, title } : c)),
       );
       try {
-        await columnApi.update(api, boardId, columnId, { title });
+        await columnApi.update(boardId, columnId, { title });
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message);
@@ -263,13 +262,13 @@ export function useBoard(boardId: string) {
         }
       }
     },
-    [boardId, api],
+    [boardId],
   );
 
   const deleteColumn = useCallback(
     async (columnId: string) => {
       try {
-        await columnApi.remove(api, boardId, columnId);
+        await columnApi.remove(boardId, columnId);
         setColumns((p) => p.filter((c) => c.id !== columnId));
         setTasks((p) => p.filter((t) => t.column_id !== columnId));
       } catch (error) {
@@ -280,7 +279,7 @@ export function useBoard(boardId: string) {
         }
       }
     },
-    [boardId, api],
+    [boardId],
   );
   return {
     board,

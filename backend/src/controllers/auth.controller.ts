@@ -94,6 +94,7 @@ export async function login(req: Request, res: Response) {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       path: "/",
     });
+
     return res.json({ user: publicUser(user) });
   } catch (error) {
     console.error(error);

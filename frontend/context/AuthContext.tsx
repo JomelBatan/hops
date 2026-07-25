@@ -66,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return user;
     } catch (error: unknown) {
       if (error instanceof Error) {
+        console.log("Error: ", error);
         toast.error(error.message);
       } else {
         toast.error("An unexpected error occurred.");

@@ -169,12 +169,12 @@ export default function MyTask() {
                   setBoardId("");
                   setSearch("");
                 }}
-                className="rounded-full px-3 py-1.5 text-xs font-medium text-faint transition-colors hover:bg-surface-2 hover:text-ink"
+                className="rounded-full px-3 py-1.5 text-xs font-medium text-faint transition-colors hover:bg-gray-200 hover:text-ink"
               >
                 Clear
               </button>
             )}
-            <span className="ml-auto rounded-full bg-surface-2 px-3 py-1 text-xs font-medium tabular text-muted">
+            <span className="ml-auto rounded-full bg-gray-200 px-3 py-1 text-xs font-medium tabular text-muted">
               {filtered.length} tasks
             </span>
           </div>
@@ -207,7 +207,7 @@ export default function MyTask() {
                     <h3 className="font-display text-black text-sm font-semibold tracking-tight">
                       {g.title}
                     </h3>
-                    <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-medium tabular text-gray-200">
+                    <span className="rounded-full bg-gray-200 px-2 py-0.5 text-[11px] font-medium tabular text-gray-200">
                       {g.items.length}
                     </span>
                   </div>

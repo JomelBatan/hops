@@ -144,7 +144,6 @@ export default function SideBar({
           label="Calendar"
           collapsed={collapsed}
         />
-        <NavItem to="/team" icon={Users} label="Team" collapsed={collapsed} />
       </nav>
       {/* Boards */}
       <div
@@ -268,7 +267,7 @@ export default function SideBar({
         <div className="px-3 pt-3">
           <button
             onClick={onCreateBoard}
-            className="brand-gradient relative w-full overflow-hidden rounded-2xl p-4 text-left text-white shadow-[var(--shadow-brand)]"
+            className="brand-gradient relative w-full overflow-hidden rounded-2xl p-4 text-left text-white shadow-(--shadow-brand)"
           >
             <div className="absolute -right-6 -top-8 h-20 w-20 rounded-full bg-white/15 blur-xl" />
             <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-white/20 backdrop-blur">

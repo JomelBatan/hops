@@ -13,7 +13,7 @@ const sizeMap = {
 interface AvatarProps {
   name: string;
   id: string;
-  src: string | null;
+  src?: string | null;
   size: Exclude<Sizes, "xl">;
   className?: string;
   title?: string;

@@ -35,7 +35,6 @@ export const authApi = {
 export const userApi = {
   search: (q: string) => api.get("/users/search", { params: { q } }),
 };
-
 export const boardApi = {
   list: () => api.get("/boards"),
   create: (data: BoardPayload) => api.post("/boards", data),
@@ -47,10 +46,9 @@ export const boardApi = {
     api.get(`/boards/${id}/activity`, { params: { limit } }),
   addMember: (id: string, data: AddMemberPayload) =>
     api.post(`/boards/${id}/members`, data),
-  removeMemver: (id: string, userId: string) =>
+  removeMember: (id: string, userId: string) =>
     api.delete(`/boards/${id}/members/${userId}`),
 };
-
 export const columnApi = {
   create: (boardId: string, data: CreateColumnPayload) =>
     api.post(`/boards/${boardId}/columns`, data),
@@ -59,7 +57,6 @@ export const columnApi = {
   remove: (boardId: string, columnId: string) =>
     api.delete(`/boards/${boardId}/columns/${columnId}`),
 };
-
 export const taskApi = {
   list: (boardId: string, params: TaskParams) =>
     api.get(`/boards/${boardId}/tasks`, { params }),
@@ -72,7 +69,6 @@ export const taskApi = {
   remove: (boardId: string, taskId: string) =>
     api.delete(`/boards/${boardId}/tasks/${taskId}`),
 };
-
 export const aiApi = {
   generateTasks: (boardId: string, data: GenerateTaskPayload) =>
     api.post(`/boards/${boardId}/ai/generate-tasks`, data),

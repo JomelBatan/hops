@@ -1,0 +1,184 @@
+import { aiApi } from "@/libs/api";
+import { Column, Task } from "@/types";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import Modal from "../ui/Modal";
+import { Check, Loader2, Sparkles } from "lucide-react";
+import { Input, Select } from "../ui/Input";
+import Button from "../ui/Button";
+import { PriorityBadge } from "../ui/Badge";
+
+interface AIGenerateModalProps {
+  open: boolean;
+  onClose: () => void;
+  boardId: string;
+  columns: Column[];
+  defaultColumnId: string | null;
+  onCreated: (t: Task[]) => void;
+}
+
+export default function AIGenerateModal({
+  open,
+  onClose,
+  boardId,
+  columns,
+  defaultColumnId,
+  onCreated,
+}: AIGenerateModalProps) {
+  const [goal, setGoal] = useState("");
+  const [count, setCount] = useState(6);
+  const [columnId, setColumnId] = useState(
+    defaultColumnId || columns[0]?.id || "",
+  );
+  const [loading, setLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState<any>(null);
+  useEffect(() => {
+    if (open) {
+      setGoal("");
+      setSuggestions(null);
+      setColumnId(defaultColumnId || columns[0]?.id || "");
+    }
+  }, [open, defaultColumnId, columns]);
+
+  async function generate(): Promise<void> {
+    if (!goal.trim()) return;
+
+    setLoading(true);
+    setSuggestions(null);
+
+    try {
+      const res = await aiApi.generateTasks(boardId, {
+        goal: goal.trim(),
+        count: Number(count),
+      });
+
+      setSuggestions(res.data.tasks);
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to generate tasks.";
+
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function addAll() {
+    setLoading(true);
+    try {
+      const res = await aiApi.generateTasks(boardId, {
+        goal: goal.trim(),
+        count: Number(count),
+        column_id: columnId,
+      });
+      onCreated?.(res.data.tasks);
+      toast.success(`Added ${res.data.tasks.length} tasks`);
+      onClose();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to add task.";
+
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await generate();
+  }
+
+  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    await generate();
+  }
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      size="lg"
+      title={
+        <span className="flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-brand-500" /> AI Task Generator
+        </span>
+      }
+      description="Describe a goal and let AI draft a backlog."
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="Project goal"
+          placeholder="e.g. Build an e-commerce checkout flow"
+          autoFocus
+          value={goal}
+          onChange={(e) => setGoal(e.target.value)}
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <Select
+            label="Number of tasks"
+            value={count}
+            onChange={(e) => setCount(Number(e.target.value))}
+          >
+            {[4, 6, 8, 10].map((n) => (
+              <option key={n} value={n}>
+                {n} tasks
+              </option>
+            ))}
+          </Select>
+
+          <Select
+            label="Add to column"
+            value={columnId}
+            onChange={(e) => setColumnId(e.target.value)}
+          >
+            {columns.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title}
+              </option>
+            ))}
+          </Select>
+        </div>
+        {!suggestions && (
+          <Button type="submit" className="w-full" loading={loading}>
+            <Sparkles className="h-4 w-4" /> Generate tasks
+          </Button>
+        )}
+      </form>
+
+      {loading && !suggestions && (
+        <div className="mt-5 flex items-center justify-center gap-2 py-8 text-muted">
+          <Loader2 className="h-5 w-5 animate-spin text-brand-500" /> Thinking…
+        </div>
+      )}
+
+      {suggestions && (
+        <div className="mt-5 space-y-2">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-faint tabular">
+            {suggestions.length} suggested tasks
+          </p>
+          <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
+            {suggestions.map((t: Task, i: number) => (
+              <div key={i} className="card rounded-2xl p-3.5">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm font-medium text-black">{t.title}</p>
+                  <PriorityBadge priority={t.priority} />
+                </div>
+                {t.description && (
+                  <p className="mt-1 text-xs text-muted">{t.description}</p>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="ghost" onClick={handleClick} disabled={loading}>
+              Regenerate
+            </Button>
+
+            <Button onClick={addAll} loading={loading}>
+              <Check className="h-4 w-4" /> Add all to{" "}
+              {columns.find((c) => c.id === columnId)?.title}
+            </Button>
+          </div>
+        </div>
+      )}
+    </Modal>
+  );
+}

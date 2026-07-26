@@ -116,9 +116,9 @@ export async function getBoard(req: Request, res: Response) {
 
     res.json({
       board: boardRes.rows[0],
-      column: columnRes.rows,
+      columns: columnRes.rows,
       tasks: tasksRes.rows,
-      member: membersRes.rows,
+      members: membersRes.rows,
       role: req.board?.role,
     });
   } catch (error) {

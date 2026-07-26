@@ -8,7 +8,7 @@ import Avatar from "../ui/Avatar";
 import Button from "../ui/Button";
 
 interface TopbarProps {
-  title: string;
+  title: string | React.ReactNode;
   subtitle: string;
   actions?: React.ReactNode;
   onCreateBoard: () => void;
@@ -111,7 +111,7 @@ export default function Topbar({
                   logout();
                   router.replace("/login");
                 }}
-                className="flex text-black w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-priority-urgent transition-colors hover:bg-surface-2"
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-priority-urgent transition-colors hover:bg-surface-2"
               >
                 <LogOut className="h-4 w-4" /> Log out
               </button>

@@ -201,7 +201,7 @@ export default function DashboardPage() {
                       </div>
                       <span className="flex items-center gap-1.5 text-faint transition-all duration-200 group-hover:text-brand-500">
                         {!b.is_owner && (
-                          <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted">
+                          <span className="rounded-full bg-gray-200 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted">
                             Shared
                           </span>
                         )}

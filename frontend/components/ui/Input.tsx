@@ -9,7 +9,7 @@ import { cn } from "@/libs/utils";
 const labelCls = "block text-xs font-medium tracking-tight text-muted";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   error?: string;
   className?: string;
   id?: string;
@@ -24,8 +24,8 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   error?: string;
-  className: string;
-  id: string;
+  className?: string;
+  id?: string;
 }
 interface FilterSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
@@ -96,10 +96,9 @@ export const Select = ({
     <div className="relative">
       <select
         id={id}
-        className={cn(
-          "input-base cursor-pointer appearance-none rounded-full pr-10",
-          className,
-        )}
+        className={`input-base cursor-pointer appearance-none rounded-full pr-10
+          ${className}
+        `}
         {...props}
       >
         {children}
@@ -117,7 +116,7 @@ export const FilterSelect = ({
   <div className="relative">
     <select
       className={cn(
-        "h-9 cursor-pointer appearance-none rounded-full border border-line bg-surface pl-4 pr-9 text-xs font-medium text-ink shadow-(--shadow-card) outline-none transition-all duration-200 hover:border-brand-300 focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/15",
+        "h-9 cursor-pointer appearance-none rounded-full border border-line bg-surface pl-4 pr-9 text-xs font-medium text-ink shadow-(--shadow-card) outline-none transition-all duration-200 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/15",
         className,
       )}
       {...props}

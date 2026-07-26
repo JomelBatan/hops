@@ -1,17 +1,19 @@
 import { GoogleGenAI } from "@google/genai";
 import { ApiError } from "../utils/ApiError.js";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
 let client: GoogleGenAI | null = null;
 function getClient() {
-  const key = process.env.GEMINI_API_KEY;
+  const key = process.env.GEMINI_API_KEY!;
   if (!key || key === "your-gemini-api-key") {
     throw new ApiError(503, "Gemini API key is not configured on the server");
   }
+
   if (!client) {
     client = new GoogleGenAI({ apiKey: key });
   }
+
   return client;
 }
 function extractJson(text: string) {
@@ -48,7 +50,6 @@ async function runPrompt(prompt: string): Promise<string> {
     if (!text) {
       throw new ApiError(502, "AI returned an empty response.");
     }
-
     return text;
   } catch (error: any) {
     if (error.isApiError) {
@@ -127,8 +128,8 @@ export async function summarizeBoard(boardTitle: string, columns: any) {
   const snapshot = columns
     .map(
       (c: any) =>
-        `${c.title} (${c.task.length}):\n` +
-        (c.task.map((t: any) => ` - ${t.title} [${t.priority}]`).join("\n") ||
+        `${c.title} (${c.tasks.length}):\n` +
+        (c.tasks.map((t: any) => ` - ${t.title} [${t.priority}]`).join("\n") ||
           " (none)"),
     )
     .join("\n");
@@ -136,10 +137,6 @@ export async function summarizeBoard(boardTitle: string, columns: any) {
   const prompt = `You are a scrum master. Write a concise summary for the Kanban board "${boardTitle}".
     Current board state:
     ${snapshot}
-    
-    
-    
-    
     Respond ONLY with JSON: {
         "headline": string (one sentence overview),
         "completed": string[] (key done items),

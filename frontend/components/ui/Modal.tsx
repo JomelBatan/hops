@@ -4,8 +4,8 @@ import React, { ReactNode, useEffect } from "react";
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  title: string;
-  description: string;
+  title: string | React.ReactNode;
+  description?: string;
   children: ReactNode;
   footer?: ReactNode;
   size?: Exclude<Sizes, "xs">;

@@ -17,7 +17,7 @@ export function useBoard(boardId: string) {
   const [board, setBoard] = useState<Board | null>(null);
   const [columns, setColumns] = useState<Column[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [members, setMembers] = useState<BoardMember[]>([]);
+  const [members, setMembers] = useState<User[]>([]);
   const [role, setRole] = useState<BoardRole>("member");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +47,6 @@ export function useBoard(boardId: string) {
         setError(null);
 
         const res = await boardApi.get(boardId);
-
         if (!alive || !res.data) return;
 
         setBoard(res.data.board);

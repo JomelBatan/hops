@@ -37,7 +37,6 @@ export default function useWorkspace() {
           if (!res?.data) return;
           const board = res.data.board || boards[i];
           const colTitle: Record<string, string> = {};
-
           (res.data.columns || []).forEach((c: Column) => {
             colTitle[c.id] = c.title;
           });
@@ -63,8 +62,7 @@ export default function useWorkspace() {
             }
           });
         });
-        console.log("boards", boards);
-        console.log("boardsLoading", boardsLoading);
+
         return { tasks: allTasks, members: [...memberMap.values()] };
       })
       .then((data) => {

@@ -4,61 +4,43 @@ import { emitToBoard, logActivity } from "../realtime/index.js";
 import type { Request, Response } from "express";
 
 export async function createColumn(req: Request, res: Response) {
-  try {
-    const title = (req.body.title || "").trim();
-    if (!title) throw ApiError.badRequest("Column title is required");
+  const title = (req.body.title || "").trim();
+  if (!title) throw ApiError.badRequest("Column title is required");
 
-    const posRes = await query(
-      `SELECT COALESCE(MAX(position), 0) + 1000 AS pos FROM columns WHERE board_id = $1`,
-      [req.board?.id],
-    );
+  const posRes = await query(
+    `SELECT COALESCE(MAX(position), 0) + 1000 AS pos FROM columns WHERE board_id = $1`,
+    [req.board?.id],
+  );
 
-    const { rows } = await query(
-      "INSERT INTO columns (board_id, title, position) VALUES ($1, $2, $3) RETURNING *",
-      [req.board?.id, title, posRes.rows[0].pos],
-    );
-    emitToBoard(req.board?.id!, title, posRes.rows[0].pos);
-    res.status(201).json({ column: rows[0] });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error on Column Controller: [Create Column Function]" });
-  }
+  const { rows } = await query(
+    "INSERT INTO columns (board_id, title, position) VALUES ($1, $2, $3) RETURNING *",
+    [req.board?.id, title, posRes.rows[0].pos],
+  );
+  emitToBoard(req.board?.id!, title, posRes.rows[0].pos);
+  res.status(201).json({ column: rows[0] });
 }
 export async function updateColumn(req: Request, res: Response) {
-  try {
-    const { title, position } = req.body;
-    const { rows } = await query(
-      `UPDATE columns
+  const { title, position } = req.body;
+  const { rows } = await query(
+    `UPDATE columns
             SET title = COALASCE($3, title)
                 postition = COALASCE($4, position),
             WHERE id = $1 AND board_id = $2
             RETURNING *`,
-      [req.params.columnId, req.board?.id!, title ?? null, position ?? null],
-    );
+    [req.params.columnId, req.board?.id!, title ?? null, position ?? null],
+  );
 
-    if (!rows.length) throw ApiError.notFound("Column not found");
-    emitToBoard(req.board?.id!, "column:updated", rows[0]);
-    res.json({ column: rows[0] });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error on Column Controller: [Update Column Function]" });
-  }
+  if (!rows.length) throw ApiError.notFound("Column not found");
+  emitToBoard(req.board?.id!, "column:updated", rows[0]);
+  res.json({ column: rows[0] });
 }
 export async function deleteColumn(req: Request, res: Response) {
-  try {
-    const result = await query(
-      `
+  const result = await query(
+    `
         DELETE FROM columns WHERE id = $1 AND board_id = $2`,
-      [req.params.columnId, req.board?.id],
-    );
-    if (!result.rowCount) throw ApiError.notFound("Column not found");
-    emitToBoard(req.board?.id!, "column:deleted", { id: req.params.columnId });
-    res.json({ success: true });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error on Column Controller: [Delete Column Function]" });
-  }
+    [req.params.columnId, req.board?.id],
+  );
+  if (!result.rowCount) throw ApiError.notFound("Column not found");
+  emitToBoard(req.board?.id!, "column:deleted", { id: req.params.columnId });
+  res.json({ success: true });
 }

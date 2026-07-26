@@ -6,6 +6,7 @@ import {
   CreateColumnPayload,
   GenerateTaskPayload,
   MoveTaskPayload,
+  RegisterPayload,
   TaskParams,
   TaskPayload,
   UpdateBoardPayload,
@@ -27,7 +28,7 @@ export const api = axios.create({
 export const useApiClient = () => api;
 
 export const authApi = {
-  register: (data: AuthPayload) => api.post("/auth/register", data),
+  register: (data: RegisterPayload) => api.post("/auth/register", data),
   login: (data: AuthPayload) => api.post("/auth/login", data),
   logout: () => api.post("/auth/logout"),
   me: () => api.get("/auth/me"),

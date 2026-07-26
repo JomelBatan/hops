@@ -1,7 +1,9 @@
 "use client";
 import { authApi } from "@/libs/api";
 import { connectSocket, disconnectSocket } from "@/libs/socket";
-import { AuthPayload, User } from "@/types";
+import { AuthPayload, RegisterPayload, User } from "@/types";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   ReactNode,
@@ -15,7 +17,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   login: ({ email, password }: AuthPayload) => void;
-  register: ({ email, password }: AuthPayload) => void;
+  register: ({ name, email, password }: RegisterPayload) => void;
   logout: () => void;
 };
 
@@ -27,7 +29,7 @@ TODO:
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const router = useRouter();
   //Restore session on first load if a token is present
   useEffect(() => {
     async function getUser() {
@@ -62,32 +64,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!res.data) return;
       handleAuth(res.data.user);
-
+      toast.success("Welcome back!");
+      router.replace("/dashboard");
       return user;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log("Error: ", error);
-        toast.error(error.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error ?? "Something went wrong";
+
+        toast.error(message);
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);
     }
   }
-  async function register({ email, password }: AuthPayload) {
+  async function register({ name, email, password }: RegisterPayload) {
     try {
       setLoading(true);
-      const res = await authApi.register({ email, password });
+      const res = await authApi.register({ name, email, password });
       if (!res.data) return;
       handleAuth(res.data.user);
-
+      toast.success("Account created!");
+      router.replace("/dashboard");
       return user;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error ?? "Something went wrong";
+
+        toast.error(message);
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);
@@ -96,19 +103,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function logout() {
     try {
       setLoading(true);
-
       const res = await authApi.logout();
 
-      if (!res.data) return;
+      toast.success(res.data.message);
       disconnectSocket();
       setUser(null);
 
       return;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error ?? "Something went wrong";
+
+        toast.error(message);
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);

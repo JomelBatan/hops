@@ -1,6 +1,7 @@
 "use client";
 import { boardApi } from "@/libs/api";
 import { Board, BoardPayload } from "@/types";
+import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -33,11 +34,13 @@ export function BoardProvider({ children }: { children: ReactNode }) {
 
       setBoards(boards);
       return;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error ?? "Something went wrong";
+
+        toast.error(message);
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     } finally {
       setLoading(false);
@@ -61,11 +64,13 @@ export function BoardProvider({ children }: { children: ReactNode }) {
       setBoards((prev) => [board, ...prev]);
 
       return board;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error ?? "Something went wrong";
+
+        toast.error(message);
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     }
   }
@@ -75,11 +80,13 @@ export function BoardProvider({ children }: { children: ReactNode }) {
       if (!res.data) return;
 
       setBoards((prev) => prev.filter((b) => b.id !== id));
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.error ?? "Something went wrong";
+
+        toast.error(message);
       } else {
-        toast.error("An unexpected error occurred.");
+        toast.error("Something went wrong");
       }
     }
   }

@@ -11,6 +11,9 @@ export interface AuthPayload {
   email: string;
   password: string;
 }
+export type RegisterPayload = AuthPayload & {
+  name: string;
+};
 export interface BoardPayload {
   title: string;
   description: string;

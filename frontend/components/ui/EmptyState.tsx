@@ -13,11 +13,11 @@ interface EmptyStateTaskProps {
 export function EmptyStateDashboard({ onCreate }: EmptyStateProps) {
   return (
     <div className="card flex flex-col items-center justify-center gap-4 rounded-3xl py-20 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-primary">
         <Sparkles className="h-7 w-7" />
       </div>
       <div>
-        <h3 className="font-display text-lg font-semibold tracking-tight">
+        <h3 className="font-display text-lg font-semibold tracking-tight text-primary">
           Create your first board
         </h3>
         <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-muted">
@@ -35,11 +35,11 @@ export function EmptyStateDashboard({ onCreate }: EmptyStateProps) {
 export function EmptyStateTask({ title, body }: EmptyStateTaskProps) {
   return (
     <div className="card flex flex-col items-center justify-center gap-3 rounded-3xl py-20 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-primary">
         <CheckSquare className="h-7 w-7" />
       </div>
       <div>
-        <h3 className="font-display text-lg font-semibold tracking-tight">
+        <h3 className="font-display text-lg font-semibold tracking-tight text-primary">
           {title}
         </h3>
         <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-muted">

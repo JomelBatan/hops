@@ -1,7 +1,7 @@
 "use client";
 import AuthSide from "@/components/auth/AuthSide";
 import Button from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Input, PasswordInput } from "@/components/ui/Input";
 import { assets } from "@/constant";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
@@ -16,31 +16,20 @@ interface FormProps {
   password: string;
 }
 export default function Login() {
-  const { login } = useAuth();
+  const { login, loading } = useAuth();
   const router = useRouter();
   const [form, setForm] = useState<FormProps>({ email: "", password: "" });
-  const [loading, setLoading] = useState(false);
 
   const fillDemo = () =>
     setForm({ email: "jomelbatan6@hops.com", password: "Test@1234" });
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
+
     try {
       await login(form);
-      toast.success("Welcome back!");
-      router.replace("/dashboard");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-      } else {
-        toast.error("Something went wrong.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    } catch {}
+  }
   return (
     <div className="flex min-h-screen bg-white">
       <div className="flex w-full items-center justify-center px-4 py-10 lg:w-1/2">
@@ -74,10 +63,9 @@ export default function Login() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
-              <Input
+              <PasswordInput
                 id="password"
                 label="Password"
-                type="password"
                 placeholder="••••••••"
                 autoComplete="current-password"
                 required
@@ -91,15 +79,6 @@ export default function Login() {
                 loading={loading}
               >
                 Log in
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="lg"
-                className="w-full"
-                onClick={fillDemo}
-              >
-                Use demo account
               </Button>
             </form>
           </div>

@@ -89,12 +89,21 @@ export default function SideBar({
   const { user, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  async function handleLogout() {
+    try {
+      console.log("FAN");
+      await logout();
+      router.replace("/");
+    } catch {}
+  }
   return (
     <aside
       className={`fixed inset-y-3 left-3 z-40 hidden flex-col overflow-hidden rounded-3xl border border-line bg-surface/90 shadow-soft backdrop-blur-xl transition-[width] duration-300 ease-spring md:flex
        ${collapsed ? "w-18" : "w-63"}`}
     >
-      <div className="flex h-16 items-center gap-2.5 px-3.5">
+      <div
+        className={`flex h-16 items-center gap-2.5 px-3.5 ${collapsed ? "justify-center" : ""}`}
+      >
         <Image src={assets.logo} height={30} width={0} alt="lepus-logo" />
 
         {!collapsed && (
@@ -247,10 +256,7 @@ export default function SideBar({
           )}
         </button>
         <button
-          onClick={() => {
-            logout();
-            router.replace("/login");
-          }}
+          onClick={handleLogout}
           title={collapsed ? "Log out" : undefined}
           className={`group cursor-pointer flex h-11 w-full items-center rounded-2xl text-sm font-medium text-muted transition-colors duration-200 hover:bg-priority-urgent/10 hover:text-priority-urgent
             ${collapsed ? "mx-auto w-11 justify-center" : "gap-3 px-3"}`}

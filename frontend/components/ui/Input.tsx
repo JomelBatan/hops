@@ -2,8 +2,16 @@ import React, {
   InputHTMLAttributes,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
+  useState,
 } from "react";
-import { ChevronDown } from "lucide-react";
+import {
+  ChevronDown,
+  EyeClosed,
+  EyeClosedIcon,
+  EyeDashedIcon,
+  EyeIcon,
+  EyeOff,
+} from "lucide-react";
 import { cn } from "@/libs/utils";
 
 const labelCls = "block text-xs font-medium tracking-tight text-muted";
@@ -13,7 +21,9 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   className?: string;
   id?: string;
+  password?: boolean;
 }
+
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   error?: string;
@@ -30,99 +40,153 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 interface FilterSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   className?: string;
 }
-export const Input = ({
+export function Input({
   label,
   error = "",
   className = "",
   id,
   ...props
-}: InputProps) => (
-  <div className="space-y-1.5">
-    {label && (
-      <label htmlFor={id} className={labelCls}>
-        {label}
-      </label>
-    )}
-    <input
-      id={id}
-      className={cn(
-        "input-base rounded-full",
-        error && "border-priority-urgent!",
-        className,
+}: InputProps) {
+  return (
+    <div className="space-y-1.5">
+      {label && (
+        <label htmlFor={id} className={labelCls}>
+          {label}
+        </label>
       )}
-      {...props}
-    />
-    {error && <p className="text-xs text-priority-urgent">{error}</p>}
-  </div>
-);
-export const Textarea = ({
+      <input
+        id={id}
+        className={cn(
+          "input-base rounded-full",
+          error && "border-priority-urgent!",
+          className,
+        )}
+        {...props}
+      />
+      {error && <p className="text-xs text-priority-urgent">{error}</p>}
+    </div>
+  );
+}
+export function PasswordInput({
+  label,
+  error = "",
+  className = "",
+  id,
+  ...props
+}: InputProps) {
+  const [show, setShow] = useState(false);
+
+  function handleShow(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    setShow((prev) => !prev);
+  }
+
+  return (
+    <div className="space-y-1.5">
+      {label && (
+        <label htmlFor={id} className={labelCls}>
+          {label}
+        </label>
+      )}
+
+      <div className="relative">
+        <input
+          id={id}
+          type={show ? "text" : "password"}
+          className={cn(
+            "input-base rounded-full pr-10",
+            error && "border-priority-urgent!",
+            className,
+          )}
+          {...props}
+        />
+
+        <button
+          type="button"
+          onClick={handleShow}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-black"
+        >
+          {show ? <EyeOff size={18} /> : <EyeIcon size={18} />}
+        </button>
+      </div>
+
+      {error && <p className="text-xs text-priority-urgent">{error}</p>}
+    </div>
+  );
+}
+export function Textarea({
   label,
   error,
   className,
   id,
   rows = 4,
   ...props
-}: TextAreaProps) => (
-  <div className="space-y-1.5">
-    {label && (
-      <label htmlFor={id} className={labelCls}>
-        {label}
-      </label>
-    )}
-    <textarea
-      id={id}
-      rows={rows}
-      className={`input-base resize-none rounded-2xl
+}: TextAreaProps) {
+  return (
+    <div className="space-y-1.5">
+      {label && (
+        <label htmlFor={id} className={labelCls}>
+          {label}
+        </label>
+      )}
+      <textarea
+        id={id}
+        rows={rows}
+        className={`input-base resize-none rounded-2xl
       ${error && "border-priority-urgent!"}
       ${className}`}
-      {...props}
-    />
-    {error && <p className="text-xs text-priority-urgent">{error}</p>}
-  </div>
-);
-export const Select = ({
+        {...props}
+      />
+      {error && <p className="text-xs text-priority-urgent">{error}</p>}
+    </div>
+  );
+}
+export function Select({
   label,
   className,
   id,
   children,
   ...props
-}: SelectProps) => (
-  <div className="space-y-1.5">
-    {label && (
-      <label htmlFor={id} className={labelCls}>
-        {label}
-      </label>
-    )}
-    <div className="relative">
-      <select
-        id={id}
-        className={`input-base cursor-pointer appearance-none rounded-full pr-10
+}: SelectProps) {
+  return (
+    <div className="space-y-1.5">
+      {label && (
+        <label htmlFor={id} className={labelCls}>
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        <select
+          id={id}
+          className={`input-base cursor-pointer appearance-none rounded-full pr-10
           ${className}
         `}
+          {...props}
+        >
+          {children}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
+      </div>
+    </div>
+  );
+}
+export function FilterSelect({
+  className = "",
+  children,
+  ...props
+}: FilterSelectProps) {
+  return (
+    <div className="relative">
+      <select
+        className={cn(
+          "h-9 cursor-pointer appearance-none rounded-full border border-line bg-surface pl-4 pr-9 text-xs font-medium text-ink shadow-(--shadow-card) outline-none transition-all duration-200 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/15",
+          className,
+        )}
         {...props}
       >
         {children}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-faint" />
     </div>
-  </div>
-);
-
-export const FilterSelect = ({
-  className = "",
-  children,
-  ...props
-}: FilterSelectProps) => (
-  <div className="relative">
-    <select
-      className={cn(
-        "h-9 cursor-pointer appearance-none rounded-full border border-line bg-surface pl-4 pr-9 text-xs font-medium text-ink shadow-(--shadow-card) outline-none transition-all duration-200 hover:border-primary/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/15",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </select>
-    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-faint" />
-  </div>
-);
+  );
+}

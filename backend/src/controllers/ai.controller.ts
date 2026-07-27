@@ -1,8 +1,8 @@
-import { query } from "../config/db.js";
-import { ApiError } from "../utils/ApiError.js";
-import { emitToBoard, logActivity } from "../realtime/index.js";
+import { query } from "../config/db";
+import { ApiError } from "../utils/ApiError";
+import { emitToBoard, logActivity } from "../realtime/index";
 import type { Request, Response } from "express";
-import * as ai from "../services/ai.service.js";
+import * as ai from "../services/ai.service";
 
 export async function generateTasks(req: Request, res: Response) {
   const goal = (req.body.goal || "").trim();

@@ -1,7 +1,7 @@
-import { verifyToken } from "../utils/jwt.js";
-import { ApiError } from "../utils/ApiError.js";
+import { verifyToken } from "../utils/jwt";
+import { ApiError } from "../utils/ApiError";
 import type { NextFunction, Request, Response } from "express";
-import type { User, Board } from "../type/index.js";
+import type { User, Board } from "../type/index";
 
 type UserPayload = Omit<User, "avatar_url" | "created_at" | "password_hash">;
 type BoardPayload = { id: string; role: string; owner_id: string };

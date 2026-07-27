@@ -1,8 +1,8 @@
 import express from "express";
 import type { Request, Response } from "express";
-import authRoutes from "./auth.routes.js";
-import boardRoutes from "./board.routes.js";
-import userRoutes from "./user.routes.js";
+import authRoutes from "./auth.routes";
+import boardRoutes from "./board.routes";
+import userRoutes from "./user.routes";
 
 const router = express.Router();
 

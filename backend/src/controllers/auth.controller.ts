@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import { query } from "../config/db.js";
-import { signToken } from "../utils/jwt.js";
-import { ApiError } from "../utils/ApiError.js";
-import type { User } from "../type/index.js";
+import { query } from "../config/db";
+import { signToken } from "../utils/jwt";
+import { ApiError } from "../utils/ApiError";
+import type { User } from "../type/index";
 import type { Request, Response } from "express";
 
 const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

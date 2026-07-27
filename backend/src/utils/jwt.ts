@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
-import type { TokenPayload } from "../type/index.js";
+import type { TokenPayload } from "../type/index";
 
 export const signToken = (payload: TokenPayload) => {
   const options: SignOptions = {

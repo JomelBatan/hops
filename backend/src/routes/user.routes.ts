@@ -1,6 +1,6 @@
 import express from "express";
-import { requireAuth } from "../middleware/auth.middleware.js";
-import { searchUser } from "../controllers/user.controller.js";
+import { requireAuth } from "../middleware/auth.middleware";
+import { searchUser } from "../controllers/user.controller";
 
 const router = express.Router();
 

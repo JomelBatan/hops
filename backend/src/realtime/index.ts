@@ -1,5 +1,5 @@
 import type { Server } from "socket.io";
-import { query } from "../config/db.js";
+import { query } from "../config/db";
 
 let io: Server | null = null;
 

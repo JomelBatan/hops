@@ -1,6 +1,6 @@
 import express from "express";
-import { requireBoardAccess } from "../middleware/boardAccess.js";
-import { requireAuth } from "../middleware/auth.middleware.js";
+import { requireBoardAccess } from "../middleware/boardAccess";
+import { requireAuth } from "../middleware/auth.middleware";
 import {
   addMember,
   createBoard,
@@ -10,24 +10,24 @@ import {
   listBoard,
   removeMember,
   updateBoard,
-} from "../controllers/board.controller.js";
+} from "../controllers/board.controller";
 import {
   createColumn,
   deleteColumn,
   updateColumn,
-} from "../controllers/column.controller.js";
+} from "../controllers/column.controller";
 import {
   createTask,
   deleteTask,
   listTask,
   moveTask,
   updateTask,
-} from "../controllers/task.controller.js";
+} from "../controllers/task.controller";
 import {
   breakDownTasks,
   generateTasks,
   summarizeBoard,
-} from "../controllers/ai.controller.js";
+} from "../controllers/ai.controller";
 
 const router = express.Router();
 

@@ -13,12 +13,10 @@ import {
   UpdateColumnPayload,
   UpdateTaskPayload,
 } from "@/types";
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 
 const API_BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_API_URL!
-    : "http://localhost:5050/api";
+  process.env.NEXT_PUBLIC_API_URL! || "http://localhost:5050/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

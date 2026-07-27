@@ -8,11 +8,15 @@ const PRIORITIES = ["low", "medium", "high", "urgent"];
 async function fetchTask(taskId: string) {
   const { rows } = await query(
     `
-        SELECT t.*
-            a.name AS assignee_name, a.email AS assignee_email, a.avatar_url AS assignee_avatar
-        FROM task t
-        LEFT JOIN users a ON a.id = t.assignee_id
-        WHERE t.id = $1`,
+    SELECT
+      t.*,
+      a.name AS assignee_name,
+      a.email AS assignee_email,
+      a.avatar_url AS assignee_avatar
+    FROM tasks t
+    LEFT JOIN users a ON a.id = t.assignee_id
+    WHERE t.id = $1
+    `,
     [taskId],
   );
 
@@ -84,9 +88,11 @@ export async function createTask(req: Request, res: Response) {
   await ensureColumnBoard(column_id, boardId);
   const posRes = await query(
     `SELECT COALESCE(MAX(position), 0) + 1000 AS pos FROM tasks WHERE column_id = $1`,
+    [column_id],
   );
+
   const { rows } = await query(
-    `INSERT INTO task (board_id, column_id, title, description, priority, due_date, assignee_id, position, created_by)
+    `INSERT INTO tasks (board_id, column_id, title, description, priority, due_date, assignee_id, position, created_by)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING id`,
     [
@@ -159,7 +165,7 @@ export async function moveTask(req: Request, res: Response) {
   const prevRes = await query(
     `
       SELECT t.column_id, c.title FROM tasks t JOIN columns c ON c.id = t.column_id WHERE t.id = $1 AND t.board_id = $2`,
-    [req.params.taskId, req.board?.id, column_id, position],
+    [req.params.taskId, req.board?.id],
   );
 
   if (!prevRes.rows.length) throw ApiError.notFound("Task not found");

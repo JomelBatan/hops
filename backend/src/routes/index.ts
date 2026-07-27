@@ -7,8 +7,9 @@ import userRoutes from "./user.routes.js";
 const router = express.Router();
 
 router.get("/health", (_req: Request, res: Response) =>
-  res.json({ status: "ok" }),
+  res.json({ status: "ok", timestamp: new Date().toISOString() }),
 );
+
 router.use("/auth", authRoutes);
 router.use("/boards", boardRoutes);
 router.use("/users", userRoutes);

@@ -32,19 +32,30 @@ export async function generateTasks(req: Request, res: Response) {
 
   for (const s of suggestions) {
     pos += 1000;
-    const { rows } = await query(`
-            INSERT INTO tasks (board_id, column_id, title, description, priority, position, created_by)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING *`);
-    [
-      req.board?.id,
-      req.body.column_id,
-      s.title,
-      s.description,
-      s.priority,
-      pos,
-      req.user?.id,
-    ];
+    const { rows } = await query(
+      `
+    INSERT INTO tasks (
+      board_id,
+      column_id,
+      title,
+      description,
+      priority,
+      position,
+      created_by
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING *
+  `,
+      [
+        req.board?.id,
+        req.body.column_id,
+        s.title,
+        s.description,
+        s.priority,
+        pos,
+        req.user?.id,
+      ],
+    );
     created.push(rows[0]);
     emitToBoard(req.board?.id!, "task:created", rows[0]);
   }

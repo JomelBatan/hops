@@ -51,9 +51,8 @@ export async function createBoard(req: Request, res: Response) {
       );
     }
     return b;
-
-    res.status(201).json({ board });
   });
+  res.status(201).json({ board });
 }
 export async function getBoard(req: Request, res: Response) {
   const boardId = req.board?.id;

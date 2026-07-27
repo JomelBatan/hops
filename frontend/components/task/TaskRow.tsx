@@ -11,7 +11,7 @@ interface TaskRowProps {
 }
 
 export default function TaskRow({ task }: TaskRowProps) {
-  const due = formatDueDate(task.due_date!);
+  const due = formatDueDate(new Date(task.due_date));
   const done = isDone(task);
   return (
     <Link

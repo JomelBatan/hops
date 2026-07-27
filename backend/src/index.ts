@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "./utils/cron.js";
 import http from "http";
 import express, { type Request, type Response } from "express";
 import cors from "cors";

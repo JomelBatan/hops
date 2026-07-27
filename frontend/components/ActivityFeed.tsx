@@ -44,7 +44,7 @@ export default function ActivityFeed({
   useEffect(() => {
     const socket = getSocket();
 
-    const onNew = (a: any) => {
+    const onNew = (a: Activity) => {
       setActivities((prev) => [a, ...prev].slice(0, 80));
     };
 

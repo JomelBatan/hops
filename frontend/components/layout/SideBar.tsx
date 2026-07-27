@@ -91,7 +91,6 @@ export default function SideBar({
   const pathname = usePathname();
   async function handleLogout() {
     try {
-      console.log("FAN");
       await logout();
       router.replace("/");
     } catch {}
@@ -210,7 +209,7 @@ export default function SideBar({
                       ${collapsed ? "mx-auto w-10 justify-center" : "gap-3 px-2"}
                       ${
                         isActive
-                          ? "bg-brand-50 font-medium text-brand-700"
+                          ? "font-medium bg-primary/20 text-primary/90 "
                           : "text-muted hover:bg-surface-2 hover:text-ink"
                       }
                     `}

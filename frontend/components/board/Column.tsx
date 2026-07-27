@@ -44,15 +44,21 @@ export default function Column({
   const [title, setTitle] = useState(column.title);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => setTitle(column.title), [column.title]);
   useEffect(() => {
-    const onClick = (e: MouseEvent) =>
-      menuRef.current &&
-      !menuRef.current.contains(e.target as Node) &&
-      setMenuOpen(false);
+    if (!menuOpen) return;
+
+    const onClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, []);
+
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [menuOpen]);
 
   const commitRename = () => {
     setEditing(false);

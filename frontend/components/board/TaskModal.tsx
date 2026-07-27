@@ -18,12 +18,6 @@ interface TaskModalProps {
   onBreakdown: (t: Task) => void;
 }
 
-const toDateInput = (value: Date): string => {
-  if (!value) return "";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return "";
-  return d.toISOString().slice(0, 10);
-};
 function empty(columnId: string): TaskPayload {
   return {
     title: "",
@@ -51,19 +45,22 @@ export default function TaskModal({
   const [breakingDown, setBreakingDown] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
-    if (task) {
-      setForm({
-        title: task.title || "",
-        description: task.description || "",
-        priority: task.priority || "medium",
-        due_date: task.due_date,
-        assignee_id: task.assignee_id || "",
-        column_id: task.column_id,
-      });
-    } else {
-      setForm(empty(defaultColumnId || columns[0]?.id));
+    function init() {
+      if (!open) return;
+      if (task) {
+        setForm({
+          title: task.title || "",
+          description: task.description || "",
+          priority: task.priority || "medium",
+          due_date: task.due_date || "",
+          assignee_id: task.assignee_id || "",
+          column_id: task.column_id,
+        });
+      } else {
+        setForm(empty(defaultColumnId || columns[0]?.id));
+      }
     }
+    init();
   }, [open, task, defaultColumnId, columns]);
 
   const set =
@@ -158,7 +155,7 @@ export default function TaskModal({
           <Input
             label="Due date"
             type="date"
-            value={form.due_date}
+            value={form.due_date ?? ""}
             onChange={set("due_date")}
           />
         </div>

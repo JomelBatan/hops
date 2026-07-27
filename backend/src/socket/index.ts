@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
-import { verifyToken } from "../utils/jwt";
-import { query } from "../config/db";
-import { setIo, boardRoom } from "../realtime/index";
+import { verifyToken } from "../utils/jwt.js";
+import { query } from "../config/db.js";
+import { setIo, boardRoom } from "../realtime/index.js";
 
 export async function userCanAccessBoard(userId: string, boardId: string) {
   const { rows } = await query(

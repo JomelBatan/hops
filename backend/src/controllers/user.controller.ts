@@ -1,6 +1,6 @@
-import { query } from "../config/db";
-import { ApiError } from "../utils/ApiError";
-import { emitToBoard, logActivity } from "../realtime/index";
+import { query } from "../config/db.js";
+import { ApiError } from "../utils/ApiError.js";
+import { emitToBoard, logActivity } from "../realtime/index.js";
 import type { Request, Response } from "express";
 
 export async function searchUser(req: Request, res: Response) {

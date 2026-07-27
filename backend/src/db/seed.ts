@@ -1,6 +1,6 @@
 import "dotenv/config";
 import bcrypt from "bcrypt";
-import { pool, query, withTransactions } from "../config/db";
+import { pool, query, withTransactions } from "../config/db.js";
 
 const PASSWORD = "Test@1234";
 const DAY = 86400000;

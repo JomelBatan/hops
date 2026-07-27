@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { query } from "../config/db";
-import { ApiError } from "../utils/ApiError";
+import { query } from "../config/db.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export async function requireBoardAccess(
   req: Request,

@@ -1,11 +1,11 @@
 import "dotenv/config";
-import "./utils/cron";
+import "./utils/cron.js";
 import http from "http";
 import express, { type Request, type Response } from "express";
 import cors from "cors";
-import apiRoutes from "../src/routes/index";
-import { errorHandler, notFoundHandler } from "../src/middleware/errorHandler";
-import { initSocket } from "./socket/index";
+import apiRoutes from "./routes/index.js";
+import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
+import { initSocket } from "./socket/index.js";
 import cookieParser from "cookie-parser";
 const app = express();
 const PORT = process.env.PORT || 5050;

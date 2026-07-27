@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/index",
-    "build": "tsc && tsc-alias",
+    "build": "tsc",
     "start": "node dist/index",
     "db:init": "tsx src/db/init.ts",
     "db:seed": "tsx src/db/seed.ts"

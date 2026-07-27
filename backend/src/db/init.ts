@@ -1,6 +1,6 @@
 import "dotenv/config";
 import fs from "fs";
-import { pool } from "../config/db";
+import { pool } from "../config/db.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 

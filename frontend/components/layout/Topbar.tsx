@@ -25,6 +25,13 @@ export default function Topbar({
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  async function handleLogout() {
+    try {
+      await logout();
+      router.replace("/");
+    } catch {}
+  }
   useEffect(() => {
     // e is typed as a native MouseEvent
     const onClick = (e: MouseEvent) => {
@@ -107,10 +114,7 @@ export default function Topbar({
               </div>
               <div className="my-1 border-t" />
               <button
-                onClick={() => {
-                  logout();
-                  router.replace("/login");
-                }}
+                onClick={handleLogout}
                 className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-priority-urgent transition-colors hover:bg-surface-2"
               >
                 <LogOut className="h-4 w-4" /> Log out

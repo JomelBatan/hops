@@ -50,9 +50,9 @@ export async function register(req: Request, res: Response) {
 
   res.cookie("access_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 15 * 60 * 1000,
+    secure: process.env.NODE_ENV === "production", // must be true in prod
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // CRITICAL CHANGE
+    maxAge: 1000 * 60 * 60 * 24 * 7,
     path: "/",
   });
   res.status(201).json({ user: publicUser(user) });
@@ -79,12 +79,11 @@ export async function login(req: Request, res: Response) {
   });
   res.cookie("access_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production", // must be true in prod
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // CRITICAL CHANGE
     maxAge: 1000 * 60 * 60 * 24 * 7,
     path: "/",
   });
-
   return res.json({ user: publicUser(user) });
 }
 

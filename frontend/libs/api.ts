@@ -29,7 +29,7 @@ export const authApi = {
   register: (data: RegisterPayload) => serverApi.post("/register", data),
   login: (data: AuthPayload) => serverApi.post("/login", data),
   logout: () => serverApi.post("/logout"),
-  me: () => api.get("/auth/me"),
+  me: () => serverApi.get("/me"),
 };
 export const userApi = {
   search: (q: string) => api.get("/users/search", { params: { q } }),

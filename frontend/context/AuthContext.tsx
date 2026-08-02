@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const res = await authApi.me();
         if (!res.data) return;
 
-        setUser(res.data.user);
+        setUser(res.data);
         connectSocket();
 
         return;
@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await authApi.login({ email, password });
 
       if (!res.data) return;
-      handleAuth(res.data.user);
+      handleAuth(res.data);
       toast.success("Welcome back!");
       router.replace("/dashboard");
       return user;
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       const res = await authApi.register({ name, email, password });
       if (!res.data) return;
-      handleAuth(res.data.user);
+      handleAuth(res.data);
       toast.success("Account created!");
       router.replace("/dashboard");
       return user;

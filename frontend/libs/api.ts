@@ -26,7 +26,7 @@ export const api = axios.create({
 export const useApiClient = () => api;
 
 export const authApi = {
-  register: (data: RegisterPayload) => api.post("/auth/register", data),
+  register: (data: RegisterPayload) => serverApi.post("/register", data),
   login: (data: AuthPayload) => serverApi.post("/login", data),
   logout: () => api.post("/auth/logout"),
   me: () => api.get("/auth/me"),

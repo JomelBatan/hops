@@ -4,7 +4,10 @@ import { cookies } from "next/headers";
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const { data } = await axios.post(`${process.env.API_URL}/auth/login`, body);
+  const { data } = await axios.post(
+    `${process.env.API_URL}/auth/register`,
+    body,
+  );
 
   (await cookies()).set("access_token", data.token, {
     httpOnly: true,

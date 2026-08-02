@@ -22,7 +22,15 @@ export function useBoard(boardId: string) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [presence, setPresence] = useState<User[]>([]);
-
+  const upsertColumn = useCallback((column: Column) => {
+    setColumns((prev) => {
+      const idx = prev.findIndex((c) => c.id === column.id);
+      if (idx === -1) return [...prev, column];
+      const next = [...prev];
+      next[idx] = column;
+      return next;
+    });
+  }, []);
   const upsertTask = useCallback((task: Task) => {
     setTasks((prev) => {
       const idx = prev.findIndex((t) => t.id === task.id);
@@ -85,8 +93,7 @@ export function useBoard(boardId: string) {
     const onUpdated = (t: Task) => upsertTask(t);
     const onMoved = (t: Task) => upsertTask(t);
     const onDeleted = ({ id }: { id: string }) => removeTaskLocal(id);
-    const onColCreated = (c: Column) =>
-      setColumns((p) => [...p, c].sort((a, b) => a.position - b.position));
+    const onColCreated = (c: Column) => upsertColumn(c);
     const onColUpdated = (c: Column) =>
       setColumns((p) =>
         p
@@ -234,7 +241,7 @@ export function useBoard(boardId: string) {
         const res = await columnApi.create(boardId, { title });
         if (!res.data) return;
         const col = res.data.column;
-        setColumns((p) => [...p, col].sort((a, b) => a.position - b.position));
+        upsertColumn(col);
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message);

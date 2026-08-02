@@ -39,7 +39,7 @@ export default function ActivityFeed({
       }
     }
     init();
-  });
+  }, [open, boardId]);
   // Live updates (subscribe always so the feed stays fresh when reopened).
   useEffect(() => {
     const socket = getSocket();
@@ -64,8 +64,8 @@ export default function ActivityFeed({
           />
           <aside className="glass fixed right-0 top-0 z-40 flex h-full w-80 flex-col border-l">
             <div className="flex items-center justify-between border-b px-4 py-4">
-              <h3 className="flex items-center gap-2 font-display text-sm font-semibold tracking-tight">
-                <ActIcon className="h-4 w-4 text-brand-500" /> Activity
+              <h3 className="flex items-center gap-2 font-display text-sm font-semibold tracking-tight text-primary/60">
+                <ActIcon className="h-4 w-4 " /> Activity
               </h3>
 
               <button
@@ -92,7 +92,7 @@ export default function ActivityFeed({
                   {activities.map((a) => (
                     <li
                       key={a.id}
-                      className="flex gap-3 rounded-lg px-2 py-2 hover:bg-surface-2"
+                      className="flex gap-3 rounded-lg px-2 py-2 hover:bg-surface/20"
                     >
                       <Avatar
                         name={a.user_name || "System"}

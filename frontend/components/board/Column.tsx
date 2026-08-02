@@ -87,7 +87,7 @@ export default function Column({
             onChange={(e) => setTitle(e.target.value)}
             onBlur={commitRename}
             onKeyDown={(e) => e.key === "Enter" && commitRename()}
-            className="w-full rounded bg-surface px-2 py-0.5 text-sm font-semibold outline-none"
+            className="w-full text-primary/90 rounded bg-surface px-2 py-0.5 text-sm font-semibold outline-none"
           />
         ) : (
           <h3

@@ -104,7 +104,7 @@ export default function BoardPage() {
   if (b.error) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-        <p className="text-lg font-semibold">{`Couldn’t load this board`}</p>
+        <p className="text-primary text-lg font-semibold">{`Couldn’t load this board`}</p>
         <p className="text-muted">{b.error}</p>
         <Link href="/dashboard">
           <Button variant="outline">Back to dashboard</Button>

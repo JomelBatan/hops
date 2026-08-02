@@ -16,20 +16,19 @@ export async function createColumn(req: Request, res: Response) {
     "INSERT INTO columns (board_id, title, position) VALUES ($1, $2, $3) RETURNING *",
     [req.board?.id, title, posRes.rows[0].pos],
   );
-  emitToBoard(req.board?.id!, title, posRes.rows[0].pos);
+  console.log("Rols: ", rows[0]);
+  emitToBoard(req.board?.id!, "column:created", rows[0]);
   res.status(201).json({ column: rows[0] });
 }
 export async function updateColumn(req: Request, res: Response) {
-  const { title, position } = req.body;
+  const { title } = req.body;
   const { rows } = await query(
     `UPDATE columns
-            SET title = COALASCE($3, title)
-                postition = COALASCE($4, position),
-            WHERE id = $1 AND board_id = $2
-            RETURNING *`,
-    [req.params.columnId, req.board?.id!, title ?? null, position ?? null],
+   SET title = COALESCE($3, title)
+   WHERE id = $1 AND board_id = $2
+   RETURNING *`,
+    [req.params.columnId, req.board?.id!, title ?? null],
   );
-
   if (!rows.length) throw ApiError.notFound("Column not found");
   emitToBoard(req.board?.id!, "column:updated", rows[0]);
   res.json({ column: rows[0] });
@@ -42,5 +41,6 @@ export async function deleteColumn(req: Request, res: Response) {
   );
   if (!result.rowCount) throw ApiError.notFound("Column not found");
   emitToBoard(req.board?.id!, "column:deleted", { id: req.params.columnId });
+
   res.json({ success: true });
 }

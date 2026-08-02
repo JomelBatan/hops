@@ -28,7 +28,7 @@ export const useApiClient = () => api;
 export const authApi = {
   register: (data: RegisterPayload) => serverApi.post("/register", data),
   login: (data: AuthPayload) => serverApi.post("/login", data),
-  logout: () => api.post("/auth/logout"),
+  logout: () => serverApi.post("/logout"),
   me: () => api.get("/auth/me"),
 };
 export const userApi = {

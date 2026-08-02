@@ -74,14 +74,6 @@ export async function login(req: Request, res: Response) {
   return res.json({ user: publicUser(user), token });
 }
 
-export async function logout(req: Request, res: Response) {
-  res.clearCookie("access_token");
-
-  return res.status(200).json({
-    message: "Logged out successfully",
-  });
-}
-
 export async function me(req: Request, res: Response) {
   const userId = req.user!.id;
 

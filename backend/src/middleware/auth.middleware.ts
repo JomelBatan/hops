@@ -16,19 +16,11 @@ declare global {
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
-  try {
-    const token = req.cookies.access_token;
+  const token = req.cookies.access_token;
+  console.log("Token: ", token);
+  if (!token) throw ApiError.unauthorized("Missing authentication token");
 
-    if (!token) throw ApiError.unauthorized("Missing authentication token");
-
-    const decoded = verifyToken(token);
-    req.user = { id: decoded.id, email: decoded.email, name: decoded.name };
-    next();
-  } catch (error: unknown) {
-    if (error instanceof Error && "isApiError" in error) {
-      return next(error);
-    }
-
-    next(ApiError.unauthorized("Invalid or expired token"));
-  }
+  const decoded = verifyToken(token);
+  req.user = { id: decoded.id, email: decoded.email, name: decoded.name };
+  next();
 }

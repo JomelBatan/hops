@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   (await cookies()).set("access_token", data.token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/",
   });
 

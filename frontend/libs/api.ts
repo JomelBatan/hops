@@ -15,18 +15,12 @@ import {
 } from "@/types";
 import axios from "axios";
 import { serverApi } from "./server-api";
-import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
-});
-api.interceptors.request.use(async (config) => {
-  const token = (await cookies()).get("access_token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
 });
 
 export const useApiClient = () => api;

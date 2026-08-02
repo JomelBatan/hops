@@ -17,7 +17,6 @@ declare global {
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const token = req.cookies.access_token;
-  console.log("Token: ", token);
   if (!token) throw ApiError.unauthorized("Missing authentication token");
 
   const decoded = verifyToken(token);

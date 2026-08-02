@@ -48,7 +48,14 @@ export async function register(req: Request, res: Response) {
     name: user.name,
   });
 
-  res.status(201).json({ user: publicUser(user), token });
+  res.cookie("access_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // must be true in prod
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // CRITICAL CHANGE
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    path: "/",
+  });
+  res.status(201).json({ user: publicUser(user) });
 }
 
 export async function login(req: Request, res: Response) {
@@ -70,8 +77,22 @@ export async function login(req: Request, res: Response) {
     email: user.email,
     name: user.name,
   });
+  res.cookie("access_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // must be true in prod
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // CRITICAL CHANGE
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    path: "/",
+  });
+  return res.json({ user: publicUser(user) });
+}
 
-  return res.json({ user: publicUser(user), token });
+export async function logout(req: Request, res: Response) {
+  res.clearCookie("access_token");
+
+  return res.status(200).json({
+    message: "Logged out successfully",
+  });
 }
 
 export async function me(req: Request, res: Response) {

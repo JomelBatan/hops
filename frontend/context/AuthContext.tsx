@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 type AuthContextType = {
   user: User | null;
   loading: boolean;
+  initializing: boolean;
   login: ({ email, password }: AuthPayload) => void;
   register: ({ name, email, password }: RegisterPayload) => void;
   logout: () => void;
@@ -29,29 +30,31 @@ TODO:
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [initializing, setInitializing] = useState(true);
   const router = useRouter();
   //Restore session on first load if a token is present
   useEffect(() => {
     async function getUser() {
-      setLoading(true);
+      setInitializing(true);
       try {
         const res = await authApi.me();
         if (!res.data) return;
 
-        setUser(res.data);
+        setUser(res.data.user);
         connectSocket();
 
         return;
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false);
+        setInitializing(false);
       }
     }
     getUser();
   }, []);
 
   function handleAuth(user: User) {
+    console.log("User: ", user);
     setUser(user);
     connectSocket();
     return user;
@@ -63,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await authApi.login({ email, password });
 
       if (!res.data) return;
-      handleAuth(res.data);
+      handleAuth(res.data.user);
       toast.success("Welcome back!");
       router.replace("/dashboard");
       return user;
@@ -84,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       const res = await authApi.register({ name, email, password });
       if (!res.data) return;
-      handleAuth(res.data);
+      handleAuth(res.data.user);
       toast.success("Account created!");
       router.replace("/dashboard");
       return user;
@@ -123,7 +126,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, initializing, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

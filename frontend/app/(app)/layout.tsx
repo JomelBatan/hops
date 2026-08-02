@@ -1,18 +1,27 @@
+"use client";
 import { LayoutInner } from "@/components/layout/AppLayout";
 import { BoardProvider } from "@/context/BoardContext";
 import React from "react";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import Loader from "@/components/ui/Loading";
+import { useRouter } from "next/navigation";
 
 interface AppLayout {
   children: React.ReactNode;
 }
 
-export default async function AppLayout({ children }: AppLayout) {
-  const token = (await cookies()).get("access_token");
-
-  if (!token) {
-    redirect("/login");
+export default function AppLayout({ children }: AppLayout) {
+  const { user, initializing } = useAuth();
+  const router = useRouter();
+  if (initializing) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+  if (!user) {
+    router.replace("/login");
   }
   return (
     <BoardProvider>

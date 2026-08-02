@@ -14,7 +14,6 @@ import {
   UpdateTaskPayload,
 } from "@/types";
 import axios from "axios";
-import { serverApi } from "./server-api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -26,10 +25,10 @@ export const api = axios.create({
 export const useApiClient = () => api;
 
 export const authApi = {
-  register: (data: RegisterPayload) => serverApi.post("/register", data),
-  login: (data: AuthPayload) => serverApi.post("/login", data),
-  logout: () => serverApi.post("/logout"),
-  me: () => serverApi.get("/me"),
+  register: (data: RegisterPayload) => api.post("/auth/register", data),
+  login: (data: AuthPayload) => api.post("/auth/login", data),
+  logout: () => api.post("/auth/logout"),
+  me: () => api.get("/auth/me"),
 };
 export const userApi = {
   search: (q: string) => api.get("/users/search", { params: { q } }),

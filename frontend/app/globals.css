@@ -252,3 +252,127 @@ body {
   );
   animation: shimmer 1.5s infinite;
 }
+.loader {
+  height: 150px;
+  width: 150px;
+  background-color: #95ccdd;
+  border-radius: 39px;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  height: 65px;
+  width: 65px;
+}
+
+.box {
+  position: absolute;
+  height: 65px;
+  width: 65px;
+  background-color: #5b5fef;
+  animation: move 3s infinite;
+  border-radius: 10px;
+  border-top-left-radius: 32.5px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.box.gold {
+  animation: moveGold 6s infinite;
+}
+
+.box.delay1 {
+  animation-delay: 1.3s;
+}
+.box.delay2 {
+  animation-delay: 4.2s;
+}
+.box.delay3 {
+  animation-delay: 0.5s;
+}
+
+.box.red {
+  background-color: #293681;
+}
+.box.green {
+  background-color: green;
+}
+.box.gold {
+  background-color: rgb(245, 176, 26);
+}
+
+@keyframes move {
+  0% {
+    width: 65;
+    height: 65;
+    margin-top: 5px;
+    margin-left: 5px;
+    border-top-left-radius: 32.5px;
+  }
+  12.5% {
+    width: 140px;
+    height: 65px;
+    margin-top: 5px;
+    margin-left: 5px;
+    border-top-left-radius: 32.5px;
+    border-top-right-radius: 32.5px;
+  }
+  25% {
+    width: 65px;
+    height: 65px;
+    margin-top: 5px;
+    margin-left: 80px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 32.5px;
+    border-bottom-right-radius: 10px;
+  }
+  37.5% {
+    width: 65px;
+    height: 140px;
+    margin-top: 5px;
+    margin-left: 80px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 32.5px;
+    border-bottom-right-radius: 32.5px;
+  }
+  50% {
+    width: 65px;
+    height: 65px;
+    margin-top: 80px;
+    margin-left: 80px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 32.5px;
+    border-bottom-left-radius: 10px;
+  }
+  62.5% {
+    width: 140px;
+    height: 65px;
+    margin-top: 80px;
+    margin-left: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 32.5px;
+    border-bottom-left-radius: 32.5px;
+  }
+  75% {
+    width: 65px;
+    height: 65px;
+    margin-top: 80px;
+    margin-left: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 32.5px;
+  }
+  87.5% {
+    width: 65px;
+    height: 140px;
+    margin-top: 5px;
+    margin-left: 5px;
+    border-top-left-radius: 32.5px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 32.5px;
+  }
+}

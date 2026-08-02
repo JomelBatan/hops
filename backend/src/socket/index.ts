@@ -25,7 +25,12 @@ export function initSocket(httpServer: any) {
   });
   io.use((socket, next) => {
     try {
-      const token = socket.handshake.headers.cookie;
+      const cookies = socket.handshake.headers.cookie ?? "";
+
+      const token = cookies
+        .split("; ")
+        .find((c) => c.startsWith("access_token="))
+        ?.split("=")[1];
       if (!token) return next(new Error("Authentication required"));
       const decoded = verifyToken(token);
       socket.data.user = {
@@ -41,7 +46,7 @@ export function initSocket(httpServer: any) {
   });
 
   io.on("connection", (socket) => {
-    const { user } = socket.data.user;
+    const user = socket.data.user;
     socket.on("board:join", async (boardId, ack) => {
       try {
         if (!(await userCanAccessBoard(user.id, boardId))) {
@@ -51,7 +56,7 @@ export function initSocket(httpServer: any) {
         const room = boardRoom(boardId);
         socket.join(room);
 
-        socket.to(room).emit("presemce:join", {
+        socket.to(room).emit("presence:join", {
           user: { id: user.id, name: user.name },
           boardId,
         });
